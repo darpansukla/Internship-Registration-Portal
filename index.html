@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Internship Registration Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f5f5f7;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .apple-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(229, 229, 234, 0.8);
+            box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.04);
+        }
+        .apple-header {
+            background: rgba(255, 255, 255, 0.90);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(229, 229, 234, 0.6);
+        }
+        .uppercase-input { text-transform: uppercase; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body class="text-slate-900 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+
+    <div class="max-w-md w-full mx-auto p-3 sm:p-4 flex-grow flex flex-col justify-between space-y-3">
+
+        <!-- HEADER -->
+        <header class="apple-header rounded-2xl p-3 shadow-sm flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-slate-900 text-white rounded-xl flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="text-[11px] font-black tracking-tight text-slate-900 uppercase">Internship Registration Portal</h1>
+                    <p id="progressIndicator" class="text-[9px] text-indigo-600 font-bold">Screen 1 of 6: Tutorial Videos</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- GLOBAL ERROR ALERT -->
+        <div id="errorAlert" class="hidden p-2.5 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-[10px] font-bold text-center"></div>
+
+        <!-- MAIN CONTAINER -->
+        <main class="flex-grow space-y-3 flex flex-col justify-center">
+
+            <!-- ================= SCREEN 1: TUTORIAL VIDEOS ================= -->
+            <div id="screen1" class="apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto">
+                <div class="text-center space-y-1">
+                    <h2 class="text-xs font-black text-slate-900 uppercase">Welcome to the Internship Portal – ইণ্টাৰ্নশ্বিপ প’ৰ্টেললৈ স্বাগতম।</h2>
+                    <p class="text-[10px] text-slate-400">Please watch the tutorial video in your preferred language before proceeding.</p>
+                </div>
+
+                <div class="space-y-2.5 pt-1">
+                    <a href="https://youtu.be/NbCUcMyTIjc" target="_blank" class="w-full flex items-center justify-between p-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-[11px] font-bold text-slate-800 transition-all">
+                        <span class="flex items-center gap-2"><i class="fa-brands fa-youtube text-rose-600 text-sm"></i> Assamese Tutorial Video</span>
+                        <i class="fa-solid fa-external-link text-[10px] text-slate-400"></i>
+                    </a>
+                    <a href="https://youtu.be/eLkU4Vq5Rzk" target="_blank" class="w-full flex items-center justify-between p-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-[11px] font-bold text-slate-800 transition-all">
+                        <span class="flex items-center gap-2"><i class="fa-brands fa-youtube text-rose-600 text-sm"></i> Hindi Tutorial Video</span>
+                        <i class="fa-solid fa-external-link text-[10px] text-slate-400"></i>
+                    </a>
+                    <a href="https://youtu.be/eLkU4Vq5Rzk" target="_blank" class="w-full flex items-center justify-between p-3 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-[11px] font-bold text-slate-800 transition-all">
+                        <span class="flex items-center gap-2"><i class="fa-brands fa-youtube text-rose-600 text-sm"></i> English Tutorial Video</span>
+                        <i class="fa-solid fa-external-link text-[10px] text-slate-400"></i>
+                    </a>
+                </div>
+
+                <button type="button" onclick="goToScreen(2)" class="w-full bg-slate-900 hover:bg-black text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md active:scale-95 transition-all flex items-center justify-center gap-2">
+                    Next Step <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- ================= SCREEN 2: EMAIL VERIFICATION ================= -->
+            <div id="screen2" class="hidden apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto">
+                <div class="text-center space-y-1">
+                    <h2 class="text-xs font-black text-slate-900 uppercase">Email Verification</h2>
+                    <p class="text-[10px] text-slate-400">Verify your active email address via OTP.</p>
+                </div>
+
+                <div id="emailStep1" class="space-y-3">
+                    <div>
+                        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Intern First Name *</label>
+                        <input type="text" id="regFirstName" placeholder="FIRST NAME" oninput="convertToUpperCase(this)" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[11px] font-bold uppercase-input text-slate-800 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Email ID *</label>
+                        <input type="email" id="regEmail" placeholder="Enter active email address" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[11px] font-bold text-slate-800 focus:outline-none">
+                    </div>
+                    <button type="button" id="sendOtpBtn" onclick="requestOTP()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md">
+                        <i class="fa-solid fa-paper-plane"></i> Send Verification Code
+                    </button>
+                </div>
+
+                <div id="emailStep2" class="hidden space-y-3">
+                    <div class="p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-center">
+                        <p class="text-[10px] text-indigo-800 font-bold">OTP sent to: <span id="displayEmail" class="underline"></span></p>
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Verification Code (6 Digits) *</label>
+                        <input type="text" id="otpInput" maxlength="6" placeholder="123456" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-center text-sm font-black tracking-widest text-slate-800 focus:outline-none">
+                    </div>
+                    <button type="button" id="verifyOtpBtn" onclick="verifyOTP()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md">
+                        Verify Email & Proceed to Payment
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= SCREEN 3: PAYMENT SECTION ================= -->
+            <div id="screen3" class="hidden apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto">
+                <div class="text-center space-y-1">
+                    <h2 class="text-xs font-black text-slate-900 uppercase">Payment Section</h2>
+                    <p class="text-[10px] text-slate-400">Complete internship program fee payment.</p>
+                </div>
+
+                <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-center space-y-1">
+                    <p class="text-xs font-black text-amber-900">Internship Program Fee: ₹1,180</p>
+                    <p class="text-[9px] text-amber-700 font-medium">Rupees One Thousand One Hundred Eighty Only</p>
+                </div>
+
+                <!-- Bank Details Box -->
+                <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3 text-xs">
+                    <div class="flex flex-col">
+                        <span class="text-[9px] text-slate-400 font-bold uppercase">Account Holder:</span> 
+                        <span class="font-bold text-slate-800 text-xs select-text">National Student Services Ltd.</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[9px] text-slate-400 font-bold uppercase">Bank Name:</span> 
+                        <span class="font-bold text-slate-800 text-xs select-text">State Bank of India</span>
+                    </div>
+                    <div class="flex items-center justify-between bg-white p-2.5 rounded-lg border border-slate-200">
+                        <div class="flex flex-col">
+                            <span class="text-[9px] text-slate-400 font-bold uppercase">Account Number:</span> 
+                            <span id="accNoText" class="font-mono font-black text-indigo-700 text-base tracking-wider select-text">10566982748</span>
+                        </div>
+                        <button type="button" onclick="copyTextDirect('accNoText', 'Account Number')" class="px-2.5 py-1.5 bg-slate-900 hover:bg-black text-white rounded-lg text-[9px] font-bold uppercase">
+                            <i class="fa-regular fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between bg-white p-2.5 rounded-lg border border-slate-200">
+                        <div class="flex flex-col">
+                            <span class="text-[9px] text-slate-400 font-bold uppercase">IFSC Code:</span> 
+                            <span id="ifscText" class="font-mono font-black text-indigo-700 text-base tracking-wider select-text">SBIN0000221</span>
+                        </div>
+                        <button type="button" onclick="copyTextDirect('ifscText', 'IFSC Code')" class="px-2.5 py-1.5 bg-slate-900 hover:bg-black text-white rounded-lg text-[9px] font-bold uppercase">
+                            <i class="fa-regular fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+
+                <div class="text-[9px] text-slate-500 space-y-1">
+                    <p class="font-bold text-slate-700">Instructions:</p>
+                    <p>1. Open Google Pay, PhonePe, Paytm, or preferred UPI app and pay ₹1,180.</p>
+                    <p>2. Copy the UPI Transaction Reference Number / RRN.</p>
+                </div>
+
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Transaction ID / UPI RRN *</label>
+                        <input type="text" id="upiRrnInput" placeholder="Enter Transaction ID / RRN" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[11px] font-bold text-slate-800 focus:outline-none uppercase-input">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Upload Payment Proof Screenshot *</label>
+                        <input type="file" id="paymentProofInput" accept="image/*" class="w-full text-[10px] text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:bg-slate-900 file:text-white hover:file:bg-black">
+                    </div>
+
+                    <button type="button" onclick="validateScreen3()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md">
+                        Proceed to Registration Form <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= SCREEN 4: REGISTRATION FORM ================= -->
+            <div id="screen4" class="hidden apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto max-h-[75vh] overflow-y-auto">
+                <div class="text-center space-y-1">
+                    <h2 class="text-xs font-black text-slate-900 uppercase">Internship Registration Form</h2>
+                    <p class="text-[10px] text-slate-400">All data automatically converts to CAPITAL LETTERS.</p>
+                </div>
+
+                <div class="space-y-3 text-[10px]">
+                    <!-- Shift Timing -->
+                    <div>
+                        <label class="block font-bold text-slate-500 uppercase mb-1">Shift Timing Preference *</label>
+                        <select id="shiftTimingSelect" onchange="checkShiftModal(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                            <option value="" disabled selected>-- Select Shift Preference --</option>
+                            <option value="Morning Batch- 09:30 to 01:30 Conducted by Darpan Sukla">Morning Batch- 09:30 to 01:30 (Conducted by Darpan Sukla)</option>
+                            <option value="Evening Batch- 01:30 to 05:30 Conducted by Ms. Soma Chakraborty">Evening Batch- 01:30 to 05:30 (Conducted by Ms. Soma Chakraborty)</option>
+                        </select>
+                    </div>
+
+                    <!-- Full Intern Name Setup -->
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                        <label class="block font-bold text-slate-700 uppercase">Intern Full Name *</label>
+                        <div class="grid grid-cols-3 gap-1.5">
+                            <div>
+                                <input type="text" id="formFirstName" placeholder="FIRST" oninput="convertToUpperCase(this); updateFullNameDisplay();" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg font-bold uppercase-input text-slate-800">
+                            </div>
+                            <div>
+                                <input type="text" id="formMiddleName" placeholder="MIDDLE" oninput="convertToUpperCase(this); updateFullNameDisplay();" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg font-bold uppercase-input text-slate-800">
+                            </div>
+                            <div>
+                                <input type="text" id="formLastName" placeholder="LAST" oninput="convertToUpperCase(this); updateFullNameDisplay();" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg font-bold uppercase-input text-slate-800">
+                            </div>
+                        </div>
+                        <p class="text-[10px] font-black text-indigo-700">Combined: <span id="displayCombinedFullName">--</span></p>
+                    </div>
+
+                    <!-- Father's Name -->
+                    <div>
+                        <label class="block font-bold text-slate-500 uppercase mb-1">Father's Name *</label>
+                        <input type="text" id="formFathersName" placeholder="ENTER FATHER NAME" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input text-slate-800">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-500 uppercase mb-1">Mother's Name *</label>
+                        <input type="text" id="formMothersName" placeholder="ENTER MOTHER NAME" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input text-slate-800">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-bold text-slate-500 uppercase mb-1">Gender *</label>
+                            <select id="formGender" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-500 uppercase mb-1">Marital Status *</label>
+                            <select id="formMarital" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Date of Birth & Live Age -->
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                        <label class="block font-bold text-slate-500 uppercase">Date of Birth (DD / MM / YYYY) *</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <select id="dobDay" onchange="calculateAge()" class="px-2 py-1.5 bg-white border border-slate-200 rounded-lg font-bold">
+                                <option value="" disabled selected>Day</option>
+                            </select>
+                            <select id="dobMonth" onchange="calculateAge()" class="px-2 py-1.5 bg-white border border-slate-200 rounded-lg font-bold">
+                                <option value="" disabled selected>Month</option>
+                                <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option><option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option>
+                                <option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
+                            </select>
+                            <select id="dobYear" onchange="calculateAge()" class="px-2 py-1.5 bg-white border border-slate-200 rounded-lg font-bold">
+                                <option value="" disabled selected>Year</option>
+                            </select>
+                        </div>
+                        <p class="text-[10px] font-bold text-indigo-600">Live Age: <span id="displayAge">--</span></p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-bold text-slate-500 uppercase mb-1">Category *</label>
+                            <select id="formCategory" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="General (Unreserved)">General (Unreserved)</option>
+                                <option value="Economically Weaker Section (EWS)">Economically Weaker Section (EWS)</option>
+                                <option value="Other Backward Classes (OBC)">Other Backward Classes (OBC)</option>
+                                <option value="Scheduled Castes (SC)">Scheduled Castes (SC)</option>
+                                <option value="Scheduled Tribes (ST)">Scheduled Tribes (ST)</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-500 uppercase mb-1">Religion *</label>
+                            <select id="formReligion" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Hinduism">Hinduism</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Christianity">Christianity</option>
+                                <option value="Sikhism">Sikhism</option>
+                                <option value="Buddhism">Buddhism</option>
+                                <option value="Jainism">Jainism</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- College & Stream -->
+                    <div>
+                        <label class="block font-bold text-slate-500 uppercase mb-1">Choose Your College *</label>
+                        <select id="formCollege" onchange="toggleOtherField('formCollege', 'otherCollegeContainer')" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                            <option value="" disabled selected>-- Select College --</option>
+                            <option value="Assam down town University">Assam down town University</option>
+                            <option value="B. Borooah College">B. Borooah College</option>
+                            <option value="Dispur College">Dispur College</option>
+                            <option value="Gauhati Commerce College">Gauhati Commerce College</option>
+                            <option value="Guwahati College">Guwahati College</option>
+                            <option value="K.C. Das Commerce College">K.C. Das Commerce College</option>
+                            <option value="S.B. Deorah College">S.B. Deorah College</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <div id="otherCollegeContainer" class="hidden mt-2">
+                            <input type="text" id="formCollegeOther" placeholder="ENTER COLLEGE NAME" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-500 uppercase mb-1">Choose Your Stream *</label>
+                        <select id="formStream" onchange="toggleOtherField('formStream', 'otherStreamContainer')" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                            <option value="" disabled selected>-- Select Stream --</option>
+                            <option value="Arts">Arts</option>
+                            <option value="Commerce">Commerce</option>
+                            <option value="Science">Science</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <div id="otherStreamContainer" class="hidden mt-2">
+                            <input type="text" id="formStreamOther" placeholder="ENTER STREAM" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-500 uppercase mb-1">What Is Your Major Subject? *</label>
+                        <select id="formMajor" onchange="toggleOtherField('formMajor', 'otherMajorContainer')" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                            <option value="" disabled selected>-- Select Major Subject --</option>
+                            <option value="Accountancy">Accountancy</option><option value="Business Mathematics">Business Mathematics</option>
+                            <option value="Chemistry">Chemistry</option><option value="Computer Science">Computer Science</option>
+                            <option value="Economics">Economics</option><option value="Education">Education</option>
+                            <option value="English">English</option><option value="Finance">Finance</option>
+                            <option value="Geography">Geography</option><option value="Geology">Geology</option>
+                            <option value="Hindi">Hindi</option><option value="History">History</option>
+                            <option value="Home Science">Home Science</option><option value="Human Resource Management (HRM)">Human Resource Management (HRM)</option>
+                            <option value="Management">Management</option><option value="Marketing">Marketing</option>
+                            <option value="Mathematics">Mathematics</option><option value="Physics">Physics</option>
+                            <option value="Political Science">Political Science</option><option value="Sociology">Sociology</option>
+                            <option value="Zoology">Zoology</option><option value="Other">Other</option>
+                        </select>
+                        <div id="otherMajorContainer" class="hidden mt-2">
+                            <input type="text" id="formMajorOther" placeholder="ENTER MAJOR SUBJECT" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input">
+                        </div>
+                    </div>
+
+                    <!-- Addresses -->
+                    <div>
+                        <label class="block font-bold text-slate-500 uppercase mb-1">Present / Postal Address *</label>
+                        <textarea id="formAddress" placeholder="ENTER PRESENT ADDRESS" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input"></textarea>
+                    </div>
+
+                    <div class="flex items-center space-x-2 py-1">
+                        <input type="checkbox" id="sameAddressCheck" onclick="togglePermanentAddress(this)" class="w-4 h-4 text-indigo-600 rounded">
+                        <label for="sameAddressCheck" class="font-bold text-slate-700 cursor-pointer">Permanent Address is same as Present Address</label>
+                    </div>
+
+                    <div id="permAddressContainer">
+                        <label class="block font-bold text-slate-500 uppercase mb-1">Permanent Address *</label>
+                        <textarea id="formPermanentAddress" placeholder="ENTER PERMANENT ADDRESS" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-bold text-slate-500 uppercase mb-1">PIN Code (6 Digits) *</label>
+                            <input type="text" id="formPin" maxlength="6" placeholder="781001" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-500 uppercase mb-1">Nationality *</label>
+                            <input type="text" id="formNationality" value="INDIAN" readonly class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl font-bold text-slate-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-bold text-slate-500 uppercase mb-1">Mobile No. (Self) *</label>
+                            <input type="text" id="formMobileSelf" maxlength="10" placeholder="10-digit number" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-500 uppercase mb-1">Mobile No. (Guardian)</label>
+                            <input type="text" id="formMobileGuardian" maxlength="10" placeholder="Optional" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-500 uppercase mb-1">E-mail Address (Verified)</label>
+                        <input type="text" id="formDisplayEmail" readonly class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl font-bold text-slate-500">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-500 uppercase mb-1">Educational Qualification *</label>
+                        <select id="formEducation" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                            <option value="" disabled selected>-- Select Qualification --</option>
+                            <option value="12th Passed">12th Passed</option>
+                            <option value="Pursuing graduation-1st Sem">Pursuing graduation-1st Sem</option>
+                            <option value="Pursuing graduation-2nd Sem">Pursuing graduation-2nd Sem</option>
+                            <option value="Pursuing graduation-3rd Sem">Pursuing graduation-3rd Sem</option>
+                            <option value="Pursuing graduation-4th Sem">Pursuing graduation-4th Sem</option>
+                            <option value="Pursuing graduation-5th Sem">Pursuing graduation-5th Sem</option>
+                            <option value="Pursuing graduation-6th Sem">Pursuing graduation-6th Sem</option>
+                            <option value="Graduated">Graduated</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-slate-500 uppercase mb-1">Working Laptop or Tablet for Internship? *</label>
+                        <select id="formDevice" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                            <option value="" disabled selected>-- Select Device Status --</option>
+                            <option value="Yes, I have a laptop">Yes, I have a laptop</option>
+                            <option value="Yes, I have a tablet">Yes, I have a tablet</option>
+                            <option value="No, I do not have either device">No, I do not have either device</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-bold text-slate-500 uppercase mb-1">Basic Computer Skills *</label>
+                            <select id="formComputerSkills" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Beginner Level">Beginner Level</option>
+                                <option value="Intermediate Level">Intermediate Level</option>
+                                <option value="Advanced Level">Advanced Level</option>
+                                <option value="No Basic Computer Skills">No Basic Computer Skills</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-500 uppercase mb-1">Typing Skill Level *</label>
+                            <select id="formTypingSkills" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                                <option value="" disabled selected>-- Select --</option>
+                                <option value="Beginner Level">Beginner Level</option>
+                                <option value="Intermediate Level">Intermediate Level</option>
+                                <option value="Advanced Level">Advanced Level</option>
+                                <option value="No Typing Skills">No Typing Skills</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="validateScreen4()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md mt-4">
+                        Verify Names & Review Data <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= SCREEN 5: REVIEW ALL DATA ================= -->
+            <div id="screen5" class="hidden apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto max-h-[75vh] overflow-y-auto">
+                <div class="text-center space-y-1">
+                    <h2 class="text-xs font-black text-slate-900 uppercase">Review Your Data</h2>
+                    <p class="text-[10px] text-slate-400">Please carefully verify your submitted details below.</p>
+                </div>
+
+                <div id="reviewContentBox" class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5 text-[10px] text-slate-700">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="goToScreen(4)" class="flex-grow bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-xl text-[10px] uppercase">
+                        <i class="fa-solid fa-arrow-left"></i> Edit Form
+                    </button>
+                    <button type="button" onclick="goToScreen(6)" class="flex-grow bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 rounded-xl text-[10px] uppercase tracking-wider">
+                        Proceed to Passport Photo <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= SCREEN 6: PASSPORT PHOTO CAPTURE & RECEIPT ================= -->
+            <div id="screen6" class="hidden apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto text-center">
+                
+                <div id="cameraScanStage" class="space-y-3">
+                    <h2 class="text-xs font-black text-slate-900 uppercase">Passport Size Photo Capture</h2>
+                    <p class="text-[10px] text-slate-400">Click below to open your camera and take your passport-size photo.</p>
+
+                    <div class="relative w-full aspect-square max-w-[200px] mx-auto bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-inner flex items-center justify-center">
+                        <input type="file" id="passportPhotoInput" accept="image/*" capture="user" onchange="previewPassportPhoto(event)" class="absolute inset-0 opacity-0 cursor-pointer z-10">
+                        <div id="photoPlaceholder" class="space-y-1 text-slate-400 p-4">
+                            <i class="fa-solid fa-camera text-2xl text-indigo-600"></i>
+                            <p class="text-[10px] font-bold">Tap to Open Camera & Take Photo</p>
+                        </div>
+                        <img id="passportPhotoPreview" class="hidden w-full h-full object-cover">
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button type="button" id="retakePhotoBtn" onclick="triggerPhotoCapture()" class="hidden w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-[10px] uppercase">
+                            <i class="fa-solid fa-rotate-right"></i> Retake Photo
+                        </button>
+                    </div>
+
+                    <button type="button" id="finalSubmitBtn" onclick="submitCompleteRegistration()" disabled class="w-full bg-slate-200 text-slate-400 font-black py-3 rounded-xl text-[11px] uppercase tracking-wider transition-all">
+                        Complete Final Submission
+                    </button>
+                </div>
+
+                <!-- Acknowledgement Receipt Stage -->
+                <div id="receiptStage" class="hidden space-y-4 text-left max-h-[75vh] overflow-y-auto">
+                    <div id="receiptCard" class="bg-white p-4 rounded-2xl border border-slate-200 space-y-3 text-[10px]">
+                        <div class="text-center border-b border-slate-100 pb-2">
+                            <h3 class="text-xs font-black uppercase text-slate-900">Internship Registration Acknowledgement</h3>
+                            <p class="text-[9px] text-indigo-600 font-bold" id="receiptRefNo">REG-XXXXXX</p>
+                        </div>
+                        <div class="space-y-1 text-slate-700 border-b border-slate-100 pb-2">
+                            <p><strong>Name:</strong> <span id="rcptName"></span></p>
+                            <p><strong>Email:</strong> <span id="rcptEmail"></span></p>
+                            <p><strong>Shift:</strong> <span id="rcptShift"></span></p>
+                            <p><strong>College:</strong> <span id="rcptCollege"></span></p>
+                            <p><strong>Transaction ID:</strong> <span id="rcptRrn"></span></p>
+                            <p class="text-emerald-600 font-bold pt-1"><i class="fa-solid fa-circle-check"></i> Status: Verified & Enrolled</p>
+                        </div>
+
+                        <!-- Important Internship Rules & Guidelines on Receipt -->
+                        <div class="bg-amber-50 border border-amber-200 p-2.5 rounded-xl space-y-1 text-[9px] text-amber-900">
+                            <p class="font-black uppercase">Mandatory Rules & Guidelines:</p>
+                            <p>• <strong>Dress Code:</strong> Formal Dress or College Uniform must be worn during the internship program. Non-formal dress is strictly not allowed for both Male & Female interns.</p>
+                            <p>• <strong>Attendance & Logbook:</strong> 100% attendance is required without fail. Bring your logbook daily for signatures. If absent, the logbook will not be signed.</p>
+                            <p>• <strong>Property & Conduct:</strong> Any damage to institution furniture will require full payment by the responsible intern. Zero tolerance for disrespect/arguing with faculty (certificate will be held).</p>
+                            <p>• <strong>Strict Violations:</strong> Any violation by male or female interns will result in internship certificates being withheld. Fighting between interns will result in the institute directly handing over individuals to the police station.</p>
+                            <p>• <strong>Prohibitions:</strong> Drinking, smoking, and gutkha/tobacco consumption are strictly prohibited.</p>
+                            <p>• <strong>Devices & Telegram:</strong> Bringing your own laptop or tablet is strongly recommended for better experience (smartphone is acceptable if unavailable). Morning batch interns must install Telegram.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button type="button" onclick="downloadReceipt()" class="flex-grow bg-slate-900 hover:bg-black text-white font-black py-3 rounded-xl text-[10px] uppercase tracking-wider">
+                            <i class="fa-solid fa-download"></i> Download Receipt Image
+                        </button>
+                        <a href="https://chat.whatsapp.com/YOUR_GROUP_INVITE_LINK" target="_blank" class="flex-grow bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl text-[10px] uppercase tracking-wider text-center flex items-center justify-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> Join WhatsApp Group
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+
+        <footer class="apple-header rounded-xl py-2 px-3 text-center text-[9px] text-slate-400 shadow-sm">
+            Made by Darpan Sukla
+        </footer>
+
+    </div>
+
+    <!-- MODAL POPUP -->
+    <div id="customModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-5 max-w-xs w-full text-center space-y-3 shadow-xl">
+            <div id="modalIcon" class="w-10 h-10 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mx-auto text-sm">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 id="modalTitle" class="text-xs font-black uppercase text-slate-900">Notice</h3>
+            <p id="modalMessage" class="text-[10px] text-slate-600"></p>
+            <button type="button" onclick="closeModal()" class="w-full bg-slate-900 text-white font-black py-2.5 rounded-xl text-[10px] uppercase">
+                Understood & Proceed
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbywGz79XMo2toP3QEEh3nBi2kx5AiUybnjGwyrCNsUoMgYFD_gNKlvQscDmbZgfoRbSYQ/exec";
+
+        let verifiedFirstName = "";
+        let verifiedEmail = "";
+        let paymentProofBase64 = "";
+        let passportPhotoBase64 = "";
+        let generatedRegNo = "";
+
+        window.addEventListener('DOMContentLoaded', () => {
+            let daySelect = document.getElementById('dobDay');
+            for(let i=1; i<=31; i++) {
+                let opt = document.createElement('option');
+                opt.value = i < 10 ? '0' + i : i;
+                opt.innerText = i;
+                daySelect.appendChild(opt);
+            }
+            let yearSelect = document.getElementById('dobYear');
+            let currentYear = new Date().getFullYear();
+            for(let i=currentYear-10; i>=currentYear-60; i--) {
+                let opt = document.createElement('option');
+                opt.value = i;
+                opt.innerText = i;
+                yearSelect.appendChild(opt);
+            }
+        });
+
+        function showError(msg) {
+            let alertBox = document.getElementById('errorAlert');
+            alertBox.innerText = msg;
+            alertBox.classList.remove('hidden');
+            setTimeout(() => alertBox.classList.add('hidden'), 4000);
+        }
+
+        function convertToUpperCase(input) {
+            input.value = input.value.toUpperCase();
+        }
+
+        function copyTextDirect(elementId, labelName) {
+            let textElement = document.getElementById(elementId);
+            let textToCopy = textElement.innerText;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showError(labelName + " copied to clipboard!");
+                }).catch(() => {
+                    fallbackCopy(textElement, labelName);
+                });
+            } else {
+                fallbackCopy(textElement, labelName);
+            }
+        }
+
+        function fallbackCopy(element, labelName) {
+            try {
+                let range = document.createRange();
+                range.selectNodeContents(element);
+                let selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                let successful = document.execCommand('copy');
+                if (successful) {
+                    showError(labelName + " copied successfully!");
+                } else {
+                    showError("Please manually copy the " + labelName);
+                }
+            } catch (err) {
+                showError("Copy failed. Please select text manually.");
+            }
+        }
+
+        function goToScreen(screenNum) {
+            for(let i=1; i<=6; i++) {
+                document.getElementById('screen' + i).classList.add('hidden');
+            }
+            document.getElementById('screen' + screenNum).classList.remove('hidden');
+            document.getElementById('progressIndicator').innerText = "Screen " + screenNum + " of 6: " + getScreenTitle(screenNum);
+
+            if(screenNum === 5) {
+                populateReviewScreen();
+            }
+        }
+
+        function getScreenTitle(num) {
+            if(num === 1) return "Tutorial Videos";
+            if(num === 2) return "Email Verification";
+            if(num === 3) return "Payment Details";
+            if(num === 4) return "Registration Form";
+            if(num === 5) return "Data Review";
+            if(num === 6) return "Passport Photo";
+        }
+
+        async function requestOTP() {
+            let name = document.getElementById('regFirstName').value.trim();
+            let email = document.getElementById('regEmail').value.trim();
+
+            if(!name || !email) {
+                showError("Please enter your First Name and Email ID.");
+                return;
+            }
+
+            let btn = document.getElementById('sendOtpBtn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sending...`;
+
+            try {
+                let res = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "send_otp", name: name, email: email })
+                });
+                let result = await res.json();
+
+                if(result.status === "success") {
+                    verifiedFirstName = name;
+                    verifiedEmail = email;
+                    document.getElementById('displayEmail').innerText = email;
+                    document.getElementById('emailStep1').classList.add('hidden');
+                    document.getElementById('emailStep2').classList.remove('hidden');
+                } else {
+                    showError("Failed to send OTP.");
+                }
+            } catch(e) {
+                showError("Network error.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Send Verification Code`;
+            }
+        }
+
+        async function verifyOTP() {
+            let otp = document.getElementById('otpInput').value.trim();
+            if(!otp || otp.length < 6) {
+                showError("Please enter the 6-digit OTP code.");
+                return;
+            }
+
+            let btn = document.getElementById('verifyOtpBtn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying...`;
+
+            try {
+                let res = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "verify_otp", email: verifiedEmail, otp: otp })
+                });
+                let result = await res.json();
+
+                if(result.status === "success") {
+                    document.getElementById('formDisplayEmail').value = verifiedEmail;
+                    goToScreen(3);
+                } else {
+                    showError("Invalid or expired OTP.");
+                }
+            } catch(e) {
+                showError("Verification failed.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `Verify Email & Proceed to Payment`;
+            }
+        }
+
+        async function validateScreen3() {
+            let rrn = document.getElementById('upiRrnInput').value.trim();
+            let fileInput = document.getElementById('paymentProofInput');
+
+            if(!rrn) {
+                showError("Please enter your Transaction ID / UPI RRN.");
+                return;
+            }
+            if(fileInput.files.length === 0) {
+                showError("Please upload your payment screenshot.");
+                return;
+            }
+
+            let file = fileInput.files[0];
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                paymentProofBase64 = e.target.result;
+                goToScreen(4);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function checkShiftModal(select) {
+            if(select.value) {
+                showModal("Shift Allocation Notice", "The Final Shift Preference will be allocated by management as per seating capacity for the internship.");
+            }
+        }
+
+        function showModal(title, msg) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerText = msg;
+            document.getElementById('customModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('customModal').classList.add('hidden');
+        }
+
+        function updateFullNameDisplay() {
+            let f = document.getElementById('formFirstName').value.trim();
+            let m = document.getElementById('formMiddleName').value.trim();
+            let l = document.getElementById('formLastName').value.trim();
+            let combined = (f + " " + (m ? m + " " : "") + l).trim();
+            document.getElementById('displayCombinedFullName').innerText = combined || "--";
+        }
+
+        function toggleOtherField(selectId, containerId) {
+            let sel = document.getElementById(selectId);
+            let cont = document.getElementById(containerId);
+            if(sel.value === "Other") {
+                cont.classList.remove('hidden');
+            } else {
+                cont.classList.add('hidden');
+            }
+        }
+
+        function togglePermanentAddress(checkbox) {
+            let permContainer = document.getElementById('permAddressContainer');
+            let presentAddr = document.getElementById('formAddress').value;
+            let permAddr = document.getElementById('formPermanentAddress');
+            if(checkbox.checked) {
+                permAddr.value = presentAddr;
+                permContainer.classList.add('hidden');
+            } else {
+                permAddr.value = "";
+                permContainer.classList.remove('hidden');
+            }
+        }
+
+        function calculateAge() {
+            let day = document.getElementById('dobDay').value;
+            let month = document.getElementById('dobMonth').value;
+            let year = document.getElementById('dobYear').value;
+            if(!day || !month || !year) return;
+            let dob = new Date(year, month - 1, day);
+            let diff = Date.now() - dob.getTime();
+            let ageDate = new Date(diff);
+            let age = Math.abs(ageDate.getUTCFullYear() - 1970);
+            document.getElementById('displayAge').innerText = age + " Years";
+        }
+
+        function validateScreen4() {
+            let shift = document.getElementById('shiftTimingSelect').value;
+            let firstName = document.getElementById('formFirstName').value;
+            let lastName = document.getElementById('formLastName').value;
+            let fathersName = document.getElementById('formFathersName').value.trim();
+            let college = document.getElementById('formCollege').value === "Other" ? document.getElementById('formCollegeOther').value : document.getElementById('formCollege').value;
+            let stream = document.getElementById('formStream').value === "Other" ? document.getElementById('formStreamOther').value : document.getElementById('formStream').value;
+            let major = document.getElementById('formMajor').value === "Other" ? document.getElementById('formMajorOther').value : document.getElementById('formMajor').value;
+            let pin = document.getElementById('formPin').value;
+            let mobile = document.getElementById('formMobileSelf').value;
+
+            if(!shift || !firstName || !lastName || !fathersName || !college || !stream || !major || pin.length !== 6 || mobile.length !== 10) {
+                showError("Please fill in all mandatory fields correctly.");
+                return;
+            }
+
+            // Combined Spelling Check for Intern Full Name & Father's Name before review
+            let combinedFullName = document.getElementById('displayCombinedFullName').innerText;
+            
+            let verifyFullNamePrompt = prompt("SPELLING VERIFICATION: Please re-type your Intern Full Name (small or capital letters accepted):");
+            if(!verifyFullNamePrompt || verifyFullNamePrompt.toUpperCase() !== combinedFullName) {
+                alert("Intern Full Name spelling did not match. Please check and try again.");
+                return;
+            }
+
+            let verifyFatherPrompt = prompt("SPELLING VERIFICATION: Please re-type Father's Name (small or capital letters accepted):");
+            if(!verifyFatherPrompt || verifyFatherPrompt.toUpperCase() !== fathersName) {
+                alert("Father's Name spelling did not match. Please check and try again.");
+                return;
+            }
+
+            goToScreen(5);
+        }
+
+        function populateReviewScreen() {
+            let f = document.getElementById('formFirstName').value;
+            let m = document.getElementById('formMiddleName').value;
+            let l = document.getElementById('formLastName').value;
+            let fullName = (f + " " + (m ? m + " " : "") + l).trim();
+            let college = document.getElementById('formCollege').value === "Other" ? document.getElementById('formCollegeOther').value : document.getElementById('formCollege').value;
+            let stream = document.getElementById('formStream').value === "Other" ? document.getElementById('formStreamOther').value : document.getElementById('formStream').value;
+            let major = document.getElementById('formMajor').value === "Other" ? document.getElementById('formMajorOther').value : document.getElementById('formMajor').value;
+
+            let html = `
+                <p><strong>Full Name:</strong> ${fullName}</p>
+                <p><strong>Father's Name:</strong> ${document.getElementById('formFathersName').value}</p>
+                <p><strong>Mother's Name:</strong> ${document.getElementById('formMothersName').value}</p>
+                <p><strong>Email:</strong> ${verifiedEmail}</p>
+                <p><strong>Mobile (Self):</strong> ${document.getElementById('formMobileSelf').value}</p>
+                <p><strong>Shift:</strong> ${document.getElementById('shiftTimingSelect').value}</p>
+                <p><strong>College:</strong> ${college}</p>
+                <p><strong>Stream / Major:</strong> ${stream} / ${major}</p>
+                <p><strong>Transaction ID:</strong> ${document.getElementById('upiRrnInput').value}</p>
+            `;
+            document.getElementById('reviewContentBox').innerHTML = html;
+        }
+
+        function triggerPhotoCapture() {
+            document.getElementById('passportPhotoInput').click();
+        }
+
+        function previewPassportPhoto(event) {
+            let file = event.target.files[0];
+            if(file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    passportPhotoBase64 = e.target.result;
+                    let preview = document.getElementById('passportPhotoPreview');
+                    preview.src = passportPhotoBase64;
+                    preview.classList.remove('hidden');
+                    document.getElementById('photoPlaceholder').classList.add('hidden');
+                    document.getElementById('retakePhotoBtn').classList.remove('hidden');
+                    
+                    let finalBtn = document.getElementById('finalSubmitBtn');
+                    finalBtn.disabled = false;
+                    finalBtn.className = "w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md";
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function submitCompleteRegistration() {
+            let firstName = document.getElementById('formFirstName').value;
+            let middleName = document.getElementById('formMiddleName').value;
+            let lastName = document.getElementById('formLastName').value;
+            let fullCombinedName = (firstName + " " + (middleName ? middleName + " " : "") + lastName).trim();
+            let permAddr = document.getElementById('sameAddressCheck').checked ? document.getElementById('formAddress').value : document.getElementById('formPermanentAddress').value;
+
+            generatedRegNo = "INT-REG-" + Math.floor(100000 + Math.random() * 900000);
+            
+            let payload = {
+                action: "register",
+                referenceNo: generatedRegNo,
+                fullName: fullCombinedName,
+                email: verifiedEmail,
+                paymentUpiRrn: document.getElementById('upiRrnInput').value,
+                paymentProofBase64: paymentProofBase64,
+                shiftTiming: document.getElementById('shiftTimingSelect').value,
+                college: document.getElementById('formCollege').value === "Other" ? document.getElementById('formCollegeOther').value : document.getElementById('formCollege').value,
+                stream: document.getElementById('formStream').value === "Other" ? document.getElementById('formStreamOther').value : document.getElementById('formStream').value,
+                majorSubject: document.getElementById('formMajor').value === "Other" ? document.getElementById('formMajorOther').value : document.getElementById('formMajor').value,
+                fathersName: document.getElementById('formFathersName').value,
+                mothersName: document.getElementById('formMothersName').value,
+                gender: document.getElementById('formGender').value,
+                maritalStatus: document.getElementById('formMarital').value,
+                dob: document.getElementById('dobDay').value + "/" + document.getElementById('dobMonth').value + "/" + document.getElementById('dobYear').value,
+                age: document.getElementById('displayAge').innerText,
+                category: document.getElementById('formCategory').value,
+                religion: document.getElementById('formReligion').value,
+                address: document.getElementById('formAddress').value,
+                permanentAddress: permAddr,
+                pinCode: document.getElementById('formPin').value,
+                nationality: "INDIAN",
+                mobileSelf: document.getElementById('formMobileSelf').value,
+                mobileGuardian: document.getElementById('formMobileGuardian').value,
+                education: document.getElementById('formEducation').value,
+                deviceStatus: document.getElementById('formDevice').value,
+                computerSkills: document.getElementById('formComputerSkills').value,
+                typingSkills: document.getElementById('formTypingSkills').value,
+                selfieBase64: passportPhotoBase64
+            };
+
+            let btn = document.getElementById('finalSubmitBtn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Submitting All Data & Passport Photo...`;
+
+            try {
+                let res = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                let result = await res.json();
+
+                if(result.status === "success") {
+                    document.getElementById('receiptRefNo').innerText = generatedRegNo;
+                    document.getElementById('rcptName').innerText = payload.fullName;
+                    document.getElementById('rcptEmail').innerText = payload.email;
+                    document.getElementById('rcptShift').innerText = payload.shiftTiming;
+                    document.getElementById('rcptCollege').innerText = payload.college;
+                    document.getElementById('rcptRrn').innerText = payload.paymentUpiRrn;
+
+                    document.getElementById('cameraScanStage').classList.add('hidden');
+                    document.getElementById('receiptStage').classList.remove('hidden');
+                    document.getElementById('progressIndicator').innerText = "Registration Complete";
+                } else {
+                    showError("Server submission error.");
+                }
+            } catch(e) {
+                showError("Failed to save data to Google Sheet.");
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function downloadReceipt() {
+            let card = document.getElementById('receiptCard');
+            html2canvas(card).then(canvas => {
+                let link = document.createElement('a');
+                link.download = generatedRegNo + '_Receipt.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
