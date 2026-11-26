@@ -41,13 +41,21 @@
             z-index: 99;
             background: transparent;
         }
+        .field-error-highlight {
+            border-color: #e11d48 !important;
+            background-color: #fff1f2 !important;
+        }
+        /* Mirror front selfie camera preview */
+        .mirror-video {
+            transform: scaleX(-1);
+        }
     </style>
 </head>
 <body class="text-slate-900 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
 
-    <!-- ================= FIRST SCREEN POPUP (Tap Anywhere to Play) ================= -->
-    <div id="firstScreenPopup" onclick="startMandatoryVideo()" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 flex items-center justify-center p-4 cursor-pointer">
-        <div class="bg-white rounded-2xl p-6 max-w-lg w-full space-y-4 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto pointer-events-none">
+    <!-- ================= FIRST SCREEN POPUP (Welcome Briefing & Action Buttons) ================= -->
+    <div id="firstScreenPopup" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 max-w-lg w-full space-y-4 shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
             <div class="text-center space-y-1 border-b border-slate-100 pb-3">
                 <h2 class="text-sm font-black text-slate-900 uppercase">Welcome to the Internship Portal <br/><span class="text-indigo-600">ইণ্টাৰ্নশ্বিপ প’ৰ্টেললৈ স্বাগতম।</span></h2>
                 <p class="text-[10px] text-slate-400">Your attention is important to ensure you don’t miss any key details</p>
@@ -61,7 +69,22 @@
                 <p><strong>Internship Dress Code:</strong> <span class="text-red-600 font-bold">Use Formal Dress or College Uniform which is suitable. Casual Dress not allowed.</span></p>
                 <p><strong>Attendance Requirement:</strong> <span class="text-red-600 font-bold">100% Attendance is required and daily log book signed by the Faculty</span></p>
                 <p><strong>Internship Fee:</strong> <span class="text-red-600 font-bold">₹1,180 (Rupees One Thousand One Hundred Eighty Only) Please pay via UPI app using Bank Transfer only.</span></p>
+            </div>
 
+            <!-- Action Buttons: Watch Tutorial Video, Fill Registration Form & Existing Users -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                <button type="button" onclick="startMandatoryVideo()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-3 px-3 rounded-xl text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md transition-all">
+                    <i class="fa-solid fa-play text-xs text-indigo-400"></i> Watch Tutorial Video
+                </button>
+                <button type="button" onclick="closeFirstPopupAndStart()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 px-3 rounded-xl text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md transition-all">
+                    <i class="fa-solid fa-arrow-right text-xs"></i> Fill Registration Form
+                </button>
+            </div>
+
+            <div class="pt-1">
+                <a href="https://darpansukla.github.io/Correct-Payment-Proof-Portal/" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 px-3 rounded-xl text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md transition-all">
+                    <i class="fa-solid fa-user-check text-xs"></i> Existing Users
+                </a>
             </div>
 
             <div class="text-center text-[10px] font-bold text-slate-500 pt-1">
@@ -91,7 +114,7 @@
                 </div>
                 <div>
                     <h1 class="text-[11px] font-black tracking-tight text-slate-900 uppercase">Internship Registration Portal</h1>
-                    <p id="progressIndicator" class="text-[9px] text-indigo-600 font-bold">Screen 1 of 5: Email Verification</p>
+                    <p id="progressIndicator" class="text-[9px] text-indigo-600 font-bold">Screen 1 of 4: Payment Details</p>
                 </div>
             </div>
         </header>
@@ -102,43 +125,8 @@
         <!-- MAIN CONTAINER -->
         <main class="flex-grow space-y-3 flex flex-col justify-center">
 
-            <!-- ================= SCREEN 1: EMAIL VERIFICATION ================= -->
+            <!-- ================= SCREEN 1: PAYMENT SECTION ================= -->
             <div id="screen1" class="apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto">
-                <div class="text-center space-y-1">
-                    <h2 class="text-xs font-black text-slate-900 uppercase">Email Verification</h2>
-                    <p class="text-[10px] text-slate-400">Verify your active email address via OTP.</p>
-                </div>
-
-                <div id="emailStep1" class="space-y-3">
-                    <div>
-                        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Intern Full Name *</label>
-                        <input type="text" id="regFirstName" placeholder="FULL NAME" oninput="convertToUpperCase(this)" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[11px] font-bold uppercase-input text-slate-800 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Email ID *</label>
-                        <input type="email" id="regEmail" placeholder="Enter active email address" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[11px] font-bold text-slate-800 focus:outline-none">
-                    </div>
-                    <button type="button" id="sendOtpBtn" onclick="requestOTP()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md">
-                        <i class="fa-solid fa-paper-plane"></i> Send Verification Code
-                    </button>
-                </div>
-
-                <div id="emailStep2" class="hidden space-y-3">
-                    <div class="p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-center">
-                        <p class="text-[10px] text-indigo-800 font-bold">OTP sent to: <span id="displayEmail" class="underline"></span></p>
-                    </div>
-                    <div>
-                        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Verification Code (6 Digits) *</label>
-                        <input type="text" id="otpInput" maxlength="6" placeholder="123456" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-center text-sm font-black tracking-widest text-slate-800 focus:outline-none">
-                    </div>
-                    <button type="button" id="verifyOtpBtn" onclick="verifyOTP()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md">
-                        Verify Email & Proceed to Payment
-                    </button>
-                </div>
-            </div>
-
-            <!-- ================= SCREEN 2: PAYMENT SECTION ================= -->
-            <div id="screen2" class="hidden apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto">
                 <div class="text-center space-y-1">
                     <h2 class="text-xs font-black text-slate-900 uppercase">Payment Section</h2>
                     <p class="text-[10px] text-slate-400">Complete internship program fee payment.</p>
@@ -195,14 +183,14 @@
                         <input type="file" id="paymentProofInput" accept="image/*" class="w-full text-[10px] text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:bg-slate-900 file:text-white hover:file:bg-black">
                     </div>
 
-                    <button type="button" onclick="validateScreen2()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md">
+                    <button type="button" onclick="validateScreen1()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md">
                         Proceed to Registration Form <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- ================= SCREEN 3: REGISTRATION FORM ================= -->
-            <div id="screen3" class="hidden apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto max-h-[75vh] overflow-y-auto">
+            <!-- ================= SCREEN 2: REGISTRATION FORM ================= -->
+            <div id="screen2" class="hidden apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto max-h-[75vh] overflow-y-auto">
                 <div class="text-center space-y-1">
                     <h2 class="text-xs font-black text-slate-900 uppercase">Internship Registration Form</h2>
                     <p class="text-[10px] text-slate-400">All data automatically converts to CAPITAL LETTERS.</p>
@@ -210,9 +198,9 @@
 
                 <div class="space-y-3 text-[10px]">
                     <!-- Shift Timing -->
-                    <div>
+                    <div data-field-group="shift">
                         <label class="block font-bold text-slate-500 uppercase mb-1">Shift Timing Preference *</label>
-                        <select id="shiftTimingSelect" onchange="checkShiftModal(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                        <select id="shiftTimingSelect" onchange="checkShiftModal(this); clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
                             <option value="" disabled selected>-- Select Shift Preference --</option>
                             <option value="Morning Batch- 09:30 to 01:30 Conducted by Darpan Sukla">Morning Batch- 09:30 to 01:30 (Conducted by Darpan Sukla)</option>
                             <option value="Evening Batch- 01:30 to 05:30 Conducted by Ms. Soma Chakraborty">Evening Batch- 01:30 to 05:30 (Conducted by Ms. Soma Chakraborty)</option>
@@ -220,45 +208,45 @@
                     </div>
 
                     <!-- Full Intern Name Setup -->
-                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                    <div data-field-group="internName" class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
                         <label class="block font-bold text-slate-700 uppercase">Intern Full Name *</label>
                         <div class="grid grid-cols-3 gap-1.5">
                             <div>
-                                <input type="text" id="formFirstName" placeholder="FIRST" oninput="convertToUpperCase(this); updateFullNameDisplay();" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg font-bold uppercase-input text-slate-800">
+                                <input type="text" id="formFirstName" placeholder="FIRST *" oninput="convertToUpperCase(this); updateFullNameDisplay(); clearFieldHighlight(this)" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg font-bold uppercase-input text-slate-800">
                             </div>
                             <div>
                                 <input type="text" id="formMiddleName" placeholder="MIDDLE" oninput="convertToUpperCase(this); updateFullNameDisplay();" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg font-bold uppercase-input text-slate-800">
                             </div>
                             <div>
-                                <input type="text" id="formLastName" placeholder="LAST" oninput="convertToUpperCase(this); updateFullNameDisplay();" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg font-bold uppercase-input text-slate-800">
+                                <input type="text" id="formLastName" placeholder="LAST *" oninput="convertToUpperCase(this); updateFullNameDisplay(); clearFieldHighlight(this)" class="w-full px-2 py-2 bg-white border border-slate-200 rounded-lg font-bold uppercase-input text-slate-800">
                             </div>
                         </div>
                         <p class="text-[10px] font-black text-indigo-700">Combined: <span id="displayCombinedFullName">--</span></p>
                     </div>
 
                     <!-- Father's Name -->
-                    <div>
+                    <div data-field-group="fathersName">
                         <label class="block font-bold text-slate-500 uppercase mb-1">Father's Name *</label>
-                        <input type="text" id="formFathersName" placeholder="ENTER FATHER NAME" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input text-slate-800">
+                        <input type="text" id="formFathersName" placeholder="ENTER FATHER NAME" oninput="convertToUpperCase(this); clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input text-slate-800">
                     </div>
-                    <div>
+                    <div data-field-group="mothersName">
                         <label class="block font-bold text-slate-500 uppercase mb-1">Mother's Name *</label>
-                        <input type="text" id="formMothersName" placeholder="ENTER MOTHER NAME" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input text-slate-800">
+                        <input type="text" id="formMothersName" placeholder="ENTER MOTHER NAME" oninput="convertToUpperCase(this); clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input text-slate-800">
                     </div>
 
                     <div class="grid grid-cols-2 gap-2">
-                        <div>
+                        <div data-field-group="gender">
                             <label class="block font-bold text-slate-500 uppercase mb-1">Gender *</label>
-                            <select id="formGender" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                            <select id="formGender" onchange="clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
                                 <option value="" disabled selected>-- Select --</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                                 <option value="Others">Others</option>
                             </select>
                         </div>
-                        <div>
+                        <div data-field-group="marital">
                             <label class="block font-bold text-slate-500 uppercase mb-1">Marital Status *</label>
-                            <select id="formMarital" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                            <select id="formMarital" onchange="clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
                                 <option value="" disabled selected>-- Select --</option>
                                 <option value="Single">Single</option>
                                 <option value="Married">Married</option>
@@ -267,18 +255,18 @@
                     </div>
 
                     <!-- Date of Birth & Live Age -->
-                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                    <div data-field-group="dob" class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
                         <label class="block font-bold text-slate-500 uppercase">Date of Birth (DD / MM / YYYY) *</label>
                         <div class="grid grid-cols-3 gap-2">
-                            <select id="dobDay" onchange="calculateAge()" class="px-2 py-1.5 bg-white border border-slate-200 rounded-lg font-bold">
+                            <select id="dobDay" onchange="calculateAge(); clearFieldHighlight(this)" class="px-2 py-1.5 bg-white border border-slate-200 rounded-lg font-bold">
                                 <option value="" disabled selected>Day</option>
                             </select>
-                            <select id="dobMonth" onchange="calculateAge()" class="px-2 py-1.5 bg-white border border-slate-200 rounded-lg font-bold">
+                            <select id="dobMonth" onchange="calculateAge(); clearFieldHighlight(this)" class="px-2 py-1.5 bg-white border border-slate-200 rounded-lg font-bold">
                                 <option value="" disabled selected>Month</option>
                                 <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option><option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option>
                                 <option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
                             </select>
-                            <select id="dobYear" onchange="calculateAge()" class="px-2 py-1.5 bg-white border border-slate-200 rounded-lg font-bold">
+                            <select id="dobYear" onchange="calculateAge(); clearFieldHighlight(this)" class="px-2 py-1.5 bg-white border border-slate-200 rounded-lg font-bold">
                                 <option value="" disabled selected>Year</option>
                             </select>
                         </div>
@@ -286,9 +274,9 @@
                     </div>
 
                     <div class="grid grid-cols-2 gap-2">
-                        <div>
+                        <div data-field-group="category">
                             <label class="block font-bold text-slate-500 uppercase mb-1">Category *</label>
-                            <select id="formCategory" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                            <select id="formCategory" onchange="clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
                                 <option value="" disabled selected>-- Select --</option>
                                 <option value="General (Unreserved)">General (Unreserved)</option>
                                 <option value="Economically Weaker Section (EWS)">Economically Weaker Section (EWS)</option>
@@ -298,9 +286,9 @@
                                 <option value="Other">Other</option>
                             </select>
                         </div>
-                        <div>
+                        <div data-field-group="religion">
                             <label class="block font-bold text-slate-500 uppercase mb-1">Religion *</label>
-                            <select id="formReligion" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                            <select id="formReligion" onchange="clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
                                 <option value="" disabled selected>-- Select --</option>
                                 <option value="Hinduism">Hinduism</option>
                                 <option value="Islam">Islam</option>
@@ -314,9 +302,9 @@
                     </div>
 
                     <!-- College & Stream -->
-                    <div>
+                    <div data-field-group="college">
                         <label class="block font-bold text-slate-500 uppercase mb-1">Choose Your College *</label>
-                        <select id="formCollege" onchange="toggleOtherField('formCollege', 'otherCollegeContainer')" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                        <select id="formCollege" onchange="toggleOtherField('formCollege', 'otherCollegeContainer'); clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
                             <option value="" disabled selected>-- Select College --</option>
                             <option value="Assam down town University">Assam down town University</option>
                             <option value="B. Borooah College">B. Borooah College</option>
@@ -328,13 +316,13 @@
                             <option value="Other">Other</option>
                         </select>
                         <div id="otherCollegeContainer" class="hidden mt-2">
-                            <input type="text" id="formCollegeOther" placeholder="ENTER COLLEGE NAME" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input">
+                            <input type="text" id="formCollegeOther" placeholder="ENTER COLLEGE NAME" oninput="convertToUpperCase(this); clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input">
                         </div>
                     </div>
 
-                    <div>
+                    <div data-field-group="stream">
                         <label class="block font-bold text-slate-500 uppercase mb-1">Choose Your Stream *</label>
-                        <select id="formStream" onchange="toggleOtherField('formStream', 'otherStreamContainer')" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                        <select id="formStream" onchange="toggleOtherField('formStream', 'otherStreamContainer'); clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
                             <option value="" disabled selected>-- Select Stream --</option>
                             <option value="Arts">Arts</option>
                             <option value="Commerce">Commerce</option>
@@ -342,13 +330,13 @@
                             <option value="Other">Other</option>
                         </select>
                         <div id="otherStreamContainer" class="hidden mt-2">
-                            <input type="text" id="formStreamOther" placeholder="ENTER STREAM" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input">
+                            <input type="text" id="formStreamOther" placeholder="ENTER STREAM" oninput="convertToUpperCase(this); clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input">
                         </div>
                     </div>
 
-                    <div>
+                    <div data-field-group="major">
                         <label class="block font-bold text-slate-500 uppercase mb-1">What Is Your Major Subject? *</label>
-                        <select id="formMajor" onchange="toggleOtherField('formMajor', 'otherMajorContainer')" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                        <select id="formMajor" onchange="toggleOtherField('formMajor', 'otherMajorContainer'); clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
                             <option value="" disabled selected>-- Select Major Subject --</option>
                             <option value="Accountancy">Accountancy</option><option value="Business Mathematics">Business Mathematics</option>
                             <option value="Chemistry">Chemistry</option><option value="Computer Science">Computer Science</option>
@@ -363,14 +351,14 @@
                             <option value="Zoology">Zoology</option><option value="Other">Other</option>
                         </select>
                         <div id="otherMajorContainer" class="hidden mt-2">
-                            <input type="text" id="formMajorOther" placeholder="ENTER MAJOR SUBJECT" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input">
+                            <input type="text" id="formMajorOther" placeholder="ENTER MAJOR SUBJECT" oninput="convertToUpperCase(this); clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input">
                         </div>
                     </div>
 
                     <!-- Addresses -->
-                    <div>
+                    <div data-field-group="address">
                         <label class="block font-bold text-slate-500 uppercase mb-1">Present / Postal Address *</label>
-                        <textarea id="formAddress" placeholder="ENTER PRESENT ADDRESS" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input"></textarea>
+                        <textarea id="formAddress" placeholder="ENTER PRESENT ADDRESS" oninput="convertToUpperCase(this); clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input"></textarea>
                     </div>
 
                     <div class="flex items-center space-x-2 py-1">
@@ -378,15 +366,16 @@
                         <label for="sameAddressCheck" class="font-bold text-slate-700 cursor-pointer">Permanent Address is same as Present Address</label>
                     </div>
 
-                    <div id="permAddressContainer">
+                    <div id="permAddressContainer" data-field-group="permAddress">
                         <label class="block font-bold text-slate-500 uppercase mb-1">Permanent Address *</label>
-                        <textarea id="formPermanentAddress" placeholder="ENTER PERMANENT ADDRESS" oninput="convertToUpperCase(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input"></textarea>
+                        <textarea id="formPermanentAddress" placeholder="ENTER PERMANENT ADDRESS" oninput="convertToUpperCase(this); clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold uppercase-input"></textarea>
                     </div>
 
                     <div class="grid grid-cols-2 gap-2">
-                        <div>
+                        <div data-field-group="pin">
                             <label class="block font-bold text-slate-500 uppercase mb-1">PIN Code (6 Digits) *</label>
-                            <input type="text" id="formPin" maxlength="6" placeholder="781001" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+                            <input type="text" id="formPin" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="781001" oninput="handlePinInput(this); clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+                            <p id="pinLiveWarning" class="hidden text-[9px] text-rose-600 font-bold mt-1"><i class="fa-solid fa-circle-exclamation"></i> Enter exactly 6 digits (numbers only).</p>
                         </div>
                         <div>
                             <label class="block font-bold text-slate-500 uppercase mb-1">Nationality *</label>
@@ -395,23 +384,28 @@
                     </div>
 
                     <div class="grid grid-cols-2 gap-2">
-                        <div>
+                        <div data-field-group="mobileSelf">
                             <label class="block font-bold text-slate-500 uppercase mb-1">Mobile No. (Self) *</label>
-                            <input type="text" id="formMobileSelf" maxlength="10" placeholder="10-digit number" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+                            <input type="text" id="formMobileSelf" inputmode="numeric" pattern="[0-9]*" maxlength="10" placeholder="10-digit number" oninput="handleMobileSelfInput(this); clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+                            <p id="mobileSelfLiveWarning" class="hidden text-[9px] text-rose-600 font-bold mt-1"><i class="fa-solid fa-circle-exclamation"></i> Mobile number must be exactly 10 digits.</p>
                         </div>
                         <div>
                             <label class="block font-bold text-slate-500 uppercase mb-1">Mobile No. (Guardian)</label>
-                            <input type="text" id="formMobileGuardian" maxlength="10" placeholder="Optional" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+                            <input type="text" id="formMobileGuardian" inputmode="numeric" pattern="[0-9]*" maxlength="10" placeholder="Optional" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
                         </div>
                     </div>
-                    <div>
-                        <label class="block font-bold text-slate-500 uppercase mb-1">E-mail Address (Verified)</label>
-                        <input type="text" id="formDisplayEmail" readonly class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl font-bold text-slate-500">
+                    <div data-field-group="email">
+                        <label class="block font-bold text-slate-500 uppercase mb-1">Active E-mail Address *</label>
+                        <div class="relative flex items-center">
+                            <input type="text" id="formEmail" onclick="triggerEmailWarningPopup()" oninput="handleEmailInput(this); clearFieldHighlight(this)" placeholder="username" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800 pr-24 focus:outline-none">
+                            <span id="emailDomainSuffix" class="absolute right-3 text-slate-400 font-bold text-[10px] pointer-events-none">@gmail.com</span>
+                        </div>
+                        <p class="text-[9px] text-indigo-600 font-semibold mt-1">Tip: Type your username; '@gmail.com' is added automatically. You can edit the domain provider if needed (e.g. @yahoo.com).</p>
                     </div>
 
-                    <div>
+                    <div data-field-group="education">
                         <label class="block font-bold text-slate-500 uppercase mb-1">Educational Qualification *</label>
-                        <select id="formEducation" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                        <select id="formEducation" onchange="clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
                             <option value="" disabled selected>-- Select Qualification --</option>
                             <option value="12th Passed">12th Passed</option>
                             <option value="Pursuing graduation-1st Sem">Pursuing graduation-1st Sem</option>
@@ -424,9 +418,9 @@
                         </select>
                     </div>
 
-                    <div>
+                    <div data-field-group="device">
                         <label class="block font-bold text-slate-500 uppercase mb-1">Working Laptop or Tablet for Internship? *</label>
-                        <select id="formDevice" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                        <select id="formDevice" onchange="clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
                             <option value="" disabled selected>-- Select Device Status --</option>
                             <option value="Yes, I have a laptop">Yes, I have a laptop</option>
                             <option value="Yes, I have a tablet">Yes, I have a tablet</option>
@@ -434,9 +428,9 @@
                         </select>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
-                        <div>
+                        <div data-field-group="computerSkills">
                             <label class="block font-bold text-slate-500 uppercase mb-1">Basic Computer Skills *</label>
-                            <select id="formComputerSkills" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                            <select id="formComputerSkills" onchange="clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
                                 <option value="" disabled selected>-- Select --</option>
                                 <option value="Beginner Level">Beginner Level</option>
                                 <option value="Intermediate Level">Intermediate Level</option>
@@ -444,9 +438,9 @@
                                 <option value="No Basic Computer Skills">No Basic Computer Skills</option>
                             </select>
                         </div>
-                        <div>
+                        <div data-field-group="typingSkills">
                             <label class="block font-bold text-slate-500 uppercase mb-1">Typing Skill Level *</label>
-                            <select id="formTypingSkills" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
+                            <select id="formTypingSkills" onchange="clearFieldHighlight(this)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800">
                                 <option value="" disabled selected>-- Select --</option>
                                 <option value="Beginner Level">Beginner Level</option>
                                 <option value="Intermediate Level">Intermediate Level</option>
@@ -456,14 +450,25 @@
                         </div>
                     </div>
 
-                    <button type="button" onclick="validateScreen3()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md mt-4">
-                        Verify Names & Review Data <i class="fa-solid fa-arrow-right"></i>
-                    </button>
+                    <div id="missingFieldsActionBar" class="hidden pt-1">
+                        <button type="button" id="toggleAllFieldsBtn" onclick="toggleShowAllFormFields()" class="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold py-2 rounded-xl text-[10px] uppercase">
+                            Show All Form Fields
+                        </button>
+                    </div>
+
+                    <div class="flex gap-2 pt-3">
+                        <button type="button" onclick="goToScreen(1)" class="w-1/3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-xl text-[10px] uppercase">
+                            <i class="fa-solid fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" onclick="validateScreen2()" class="w-2/3 bg-slate-900 hover:bg-black text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md">
+                            Verify Names & Review <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- ================= SCREEN 4: REVIEW ALL DATA ================= -->
-            <div id="screen4" class="hidden apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto max-h-[75vh] overflow-y-auto">
+            <!-- ================= SCREEN 3: REVIEW ALL DATA ================= -->
+            <div id="screen3" class="hidden apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto max-h-[75vh] overflow-y-auto">
                 <div class="text-center space-y-1">
                     <h2 class="text-xs font-black text-slate-900 uppercase">Review Your Data</h2>
                     <p class="text-[10px] text-slate-400">Please carefully verify your submitted details below.</p>
@@ -474,40 +479,221 @@
                 </div>
 
                 <div class="flex gap-2 pt-2">
-                    <button type="button" onclick="goToScreen(3)" class="flex-grow bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-xl text-[10px] uppercase">
-                        <i class="fa-solid fa-arrow-left"></i> Edit Form
+                    <button type="button" onclick="goToScreen(2)" class="w-1/3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-xl text-[10px] uppercase">
+                        <i class="fa-solid fa-arrow-left"></i> Back
                     </button>
-                    <button type="button" onclick="goToScreen(5)" class="flex-grow bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 rounded-xl text-[10px] uppercase tracking-wider">
-                        Proceed to Passport Photo <i class="fa-solid fa-arrow-right"></i>
+                    <button type="button" onclick="goToScreen(4)" class="w-2/3 bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 rounded-xl text-[10px] uppercase tracking-wider">
+                        Proceed to Selfie Verification & Final OTP <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- ================= SCREEN 5: PASSPORT PHOTO CAPTURE & RECEIPT ================= -->
-            <div id="screen5" class="hidden apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto text-center">
+            <!-- ================= SCREEN 4: SELFIE VERIFICATION, FINAL EMAIL OTP & RECEIPT ================= -->
+            <div id="screen4" class="hidden apple-card rounded-2xl p-5 space-y-4 animate-fade-in my-auto text-center">
                 
                 <div id="cameraScanStage" class="space-y-3">
-                    <h2 class="text-xs font-black text-slate-900 uppercase">Passport Size Photo Capture</h2>
-                    <p class="text-[10px] text-slate-400">Click below to open your camera and take your passport-size photo.</p>
-
-                    <div class="relative w-full aspect-square max-w-[200px] mx-auto bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 shadow-inner flex items-center justify-center">
-                        <input type="file" id="passportPhotoInput" accept="image/*" capture="user" onchange="previewPassportPhoto(event)" class="absolute inset-0 opacity-0 cursor-pointer z-10">
-                        <div id="photoPlaceholder" class="space-y-1 text-slate-400 p-4">
-                            <i class="fa-solid fa-camera text-2xl text-indigo-600"></i>
-                            <p class="text-[10px] font-bold">Tap to Open Camera & Take Photo</p>
-                        </div>
-                        <img id="passportPhotoPreview" class="hidden w-full h-full object-cover">
+                    <div class="flex items-center justify-between">
+                        <button type="button" onclick="stopSelfieCamera(); goToScreen(3);" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg text-[10px] uppercase flex items-center gap-1">
+                            <i class="fa-solid fa-arrow-left"></i> Back
+                        </button>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase">Step 4 of 4</span>
                     </div>
 
-                    <div class="flex gap-2">
-                        <button type="button" id="retakePhotoBtn" onclick="triggerPhotoCapture()" class="hidden w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-[10px] uppercase">
-                            <i class="fa-solid fa-rotate-right"></i> Retake Photo
+                    <h2 class="text-xs font-black text-slate-900 uppercase">Selfie Verification</h2>
+
+                    <!-- STEP A: GUIDE SCREEN (Matching Reference Image) -->
+                    <div id="selfieGuideView" class="space-y-4 pt-1 animate-fade-in">
+                        <p class="text-sm font-extrabold text-slate-900">Ready to take a selfie?</p>
+
+                        <!-- Circular Face Outline Illustration matching image -->
+                        <div class="w-32 h-32 mx-auto rounded-full border-[3px] border-[#b7e477] bg-white flex items-center justify-center shadow-sm">
+                            <svg class="w-24 h-24 text-slate-900" viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <!-- Hair -->
+                                <path d="M35 45 C32 25, 55 18, 72 22 C86 24, 90 36, 84 42 C72 44, 52 43, 44 45" fill="white" />
+                                <!-- Left Ear -->
+                                <path d="M35 55 C26 53, 26 69, 36 69" />
+                                <path d="M34 59 C30 59, 30 65, 34 65" />
+                                <!-- Right Ear -->
+                                <path d="M84 55 C93 53, 93 69, 83 69" />
+                                <path d="M85 59 C89 59, 89 65, 85 65" />
+                                <!-- Face Contour -->
+                                <path d="M35 45 C34 72, 42 88, 60 88 C78 88, 85 72, 84 42" />
+                                <!-- Eyes -->
+                                <line x1="51" y1="54" x2="51" y2="59" stroke-width="3" />
+                                <line x1="68" y1="54" x2="68" y2="59" stroke-width="3" />
+                                <!-- Nose -->
+                                <path d="M59 55 L61 65 L57 66" />
+                                <!-- Smile -->
+                                <path d="M53 73 Q59 78 65 72" />
+                            </svg>
+                        </div>
+
+                        <!-- 3 Checklist Items with Mini Icons & Red X Badges -->
+                        <div class="space-y-3 text-left px-1">
+                            <!-- Rule 1: No Mask / Face Covering -->
+                            <div class="flex items-center gap-3">
+                                <div class="relative w-11 h-11 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0">
+                                    <svg class="w-8 h-8 text-slate-700" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 24 C18 14, 46 14, 46 24" />
+                                        <path d="M20 24 L20 38 C20 46, 44 46, 44 38 L44 24" />
+                                        <path d="M20 32 Q32 30 44 32 L43 41 Q32 46 21 41 Z" fill="#334155" />
+                                        <path d="M12 54 C14 47, 50 47, 52 54" fill="#a3e635" stroke="none" />
+                                    </svg>
+                                    <span class="w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-black flex items-center justify-center absolute -bottom-1.5 left-1/2 -translate-x-1/2 shadow">✕</span>
+                                </div>
+                                <p class="text-[11px] font-medium text-slate-700 leading-snug">Remove anything that covers your face.</p>
+                            </div>
+
+                            <!-- Rule 2: No Glasses -->
+                            <div class="flex items-center gap-3">
+                                <div class="relative w-11 h-11 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0">
+                                    <svg class="w-8 h-8 text-slate-700" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 24 C18 14, 46 14, 46 24" />
+                                        <path d="M20 24 L20 38 C20 46, 44 46, 44 38 L44 24" />
+                                        <rect x="22" y="27" width="8" height="5" rx="1" fill="#1e293b" />
+                                        <rect x="34" y="27" width="8" height="5" rx="1" fill="#1e293b" />
+                                        <line x1="30" y1="29" x2="34" y2="29" />
+                                        <path d="M12 54 C14 47, 50 47, 52 54" fill="#a3e635" stroke="none" />
+                                    </svg>
+                                    <span class="w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-black flex items-center justify-center absolute -bottom-1.5 left-1/2 -translate-x-1/2 shadow">✕</span>
+                                </div>
+                                <p class="text-[11px] font-medium text-slate-700 leading-snug">Take off your glasses to prevent glare or reflections</p>
+                            </div>
+
+                            <!-- Rule 3: Well-lit space -->
+                            <div class="flex items-center gap-3">
+                                <div class="relative w-11 h-11 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0">
+                                    <svg class="w-8 h-8 text-slate-300" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 24 C18 14, 46 14, 46 24" />
+                                        <path d="M20 24 L20 38 C20 46, 44 46, 44 38 L44 24" />
+                                        <circle cx="27" cy="29" r="1" fill="currentColor" />
+                                        <circle cx="37" cy="29" r="1" fill="currentColor" />
+                                        <path d="M12 54 C14 47, 50 47, 52 54" fill="#d9f99d" stroke="none" />
+                                    </svg>
+                                    <span class="w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-black flex items-center justify-center absolute -bottom-1.5 left-1/2 -translate-x-1/2 shadow">✕</span>
+                                </div>
+                                <p class="text-[11px] font-medium text-slate-700 leading-snug">Take your selfie in a well-lit space</p>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="openSelfieCamera()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-3 rounded-full text-xs tracking-wide shadow-md transition-all">
+                            Next — Open Selfie Camera
                         </button>
                     </div>
 
-                    <button type="button" id="finalSubmitBtn" onclick="submitCompleteRegistration()" disabled class="w-full bg-slate-200 text-slate-400 font-black py-3 rounded-xl text-[11px] uppercase tracking-wider transition-all">
-                        Complete Final Submission
-                    </button>
+                    <!-- STEP B: LIVE SELFIE CAMERA WITH HUMAN FACE OUTLINE OVERLAY -->
+                    <div id="selfieCameraView" class="hidden space-y-3 animate-fade-in">
+                        <p class="text-[10px] text-slate-500 font-semibold">Align your face inside the outline and click Capture Selfie.</p>
+
+                        <div class="relative w-full aspect-square max-w-[230px] mx-auto bg-slate-900 rounded-3xl overflow-hidden border-2 border-[#b7e477] shadow-lg flex items-center justify-center">
+                            <!-- Live Front Camera Video Stream -->
+                            <video id="selfieVideoStream" autoplay playsinline muted class="w-full h-full object-cover mirror-video"></video>
+                            <canvas id="selfieCanvas" class="hidden"></canvas>
+
+                            <!-- Human Face & Shoulders Outline Overlay on Screen -->
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" viewBox="0 0 200 200" fill="none">
+                                <defs>
+                                    <mask id="faceGuideMask">
+                                        <rect width="200" height="200" fill="white" />
+                                        <ellipse cx="100" cy="86" rx="46" ry="58" fill="black" />
+                                        <path d="M32 195 C38 156, 162 156, 168 195 Z" fill="black" />
+                                    </mask>
+                                </defs>
+                                <rect width="200" height="200" fill="rgba(15, 23, 42, 0.45)" mask="url(#faceGuideMask)" />
+
+                                <!-- Bright Dashed Human Head + Shoulders Outline -->
+                                <ellipse cx="100" cy="86" rx="46" ry="58" stroke="#b7e477" stroke-width="2.5" stroke-dasharray="6 4" />
+                                <path d="M54 78 C47 78, 47 96, 54 96" stroke="#b7e477" stroke-width="2" stroke-linecap="round" />
+                                <path d="M146 78 C153 78, 153 96, 146 96" stroke="#b7e477" stroke-width="2" stroke-linecap="round" />
+                                <line x1="68" y1="80" x2="86" y2="80" stroke="#b7e477" stroke-width="1.5" stroke-opacity="0.7" stroke-linecap="round" />
+                                <line x1="114" y1="80" x2="132" y2="80" stroke="#b7e477" stroke-width="1.5" stroke-opacity="0.7" stroke-linecap="round" />
+                                <path d="M32 195 C38 156, 162 156, 168 195" stroke="#b7e477" stroke-width="2.5" stroke-dasharray="6 4" stroke-linecap="round" />
+                            </svg>
+
+                            <span class="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-20 bg-black/65 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full backdrop-blur-sm whitespace-nowrap">
+                                Position face inside outline
+                            </span>
+                        </div>
+
+                        <!-- Hidden fallback file input if browser blocks live camera -->
+                        <input type="file" id="passportPhotoInput" accept="image/*" capture="user" onchange="previewPassportPhoto(event)" class="hidden">
+
+                        <div class="flex gap-2">
+                            <button type="button" onclick="backToSelfieGuide()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-[10px] uppercase">
+                                Guide
+                            </button>
+                            <button type="button" onclick="captureSelfieFromStream()" class="w-2/3 bg-emerald-600 hover:bg-emerald-700 text-white font-black py-2.5 rounded-xl text-[11px] uppercase tracking-wider shadow-md flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-camera"></i> Click Selfie
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP C: CAPTURED SELFIE PREVIEW -->
+                    <div id="selfiePreviewView" class="hidden space-y-2.5 animate-fade-in">
+                        <div class="relative w-full aspect-square max-w-[180px] mx-auto bg-slate-100 rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-inner flex items-center justify-center">
+                            <img id="passportPhotoPreview" class="w-full h-full object-cover">
+                            <span class="absolute top-2 right-2 bg-emerald-600 text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase shadow">
+                                <i class="fa-solid fa-check"></i> Captured
+                            </span>
+                        </div>
+
+                        <button type="button" id="retakePhotoBtn" onclick="retakeSelfie()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 rounded-xl text-[10px] uppercase">
+                            <i class="fa-solid fa-rotate-right"></i> Retake Selfie
+                        </button>
+                    </div>
+
+                    <!-- Final Email OTP Section (Unlocked after selfie capture) -->
+                    <div id="finalEmailOtpBox" class="hidden p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2.5 text-left animate-fade-in">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex-grow">
+                                <span class="text-[9px] font-bold text-slate-400 uppercase block">Verification Email</span>
+                                <span id="finalVerifyEmailText" class="text-[11px] font-black text-slate-800 break-all"></span>
+                                <div id="editFinalEmailContainer" class="hidden mt-1.5 space-y-1.5">
+                                    <input type="text" id="editFinalEmailInput" placeholder="Enter active email address" class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-[11px] font-bold text-slate-800 focus:outline-none focus:border-indigo-500">
+                                    <div class="flex gap-1.5">
+                                        <button type="button" onclick="saveEditedFinalEmail()" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-[9px] uppercase">Save Email</button>
+                                        <button type="button" onclick="cancelEditFinalEmail()" class="px-3 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-lg text-[9px] uppercase">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-end gap-1 shrink-0">
+                                <span id="finalEmailVerifiedBadge" class="hidden px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full text-[9px] font-black uppercase">
+                                    <i class="fa-solid fa-circle-check"></i> Verified
+                                </span>
+                                <button type="button" id="editFinalEmailBtn" onclick="toggleEditFinalEmail()" class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-[9px] font-bold uppercase">
+                                    <i class="fa-solid fa-pen"></i> Edit Email
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="finalSendOtpStep">
+                            <button type="button" id="sendFinalOtpBtn" onclick="requestFinalOTP()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-2.5 rounded-xl text-[10px] uppercase tracking-wider shadow-sm">
+                                <i class="fa-solid fa-paper-plane"></i> Send Final Submission OTP
+                            </button>
+                        </div>
+
+                        <div id="finalEnterOtpStep" class="hidden space-y-2">
+                            <p class="text-[9px] text-indigo-700 font-bold text-center">6-digit verification code sent to your email.</p>
+                            <div class="flex gap-2">
+                                <input type="text" id="finalOtpInput" maxlength="6" placeholder="123456" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-center text-xs font-black tracking-widest text-slate-800 focus:outline-none">
+                                <button type="button" id="verifyFinalOtpBtn" onclick="verifyFinalOTP()" class="px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl text-[10px] uppercase tracking-wider whitespace-nowrap">
+                                    Verify OTP
+                                </button>
+                            </div>
+                            <button type="button" onclick="requestFinalOTP()" class="w-full text-[9px] text-slate-500 hover:text-indigo-600 font-bold underline text-center">
+                                Resend OTP
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2 pt-1">
+                        <button type="button" onclick="stopSelfieCamera(); goToScreen(3);" class="w-1/3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-xl text-[10px] uppercase">
+                            <i class="fa-solid fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" id="finalSubmitBtn" onclick="submitCompleteRegistration()" disabled class="w-2/3 bg-slate-200 text-slate-400 font-black py-3 rounded-xl text-[11px] uppercase tracking-wider transition-all cursor-not-allowed">
+                            Complete Final Submission
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Acknowledgement Receipt Stage -->
@@ -526,6 +712,16 @@
                             <p class="text-emerald-600 font-bold pt-1"><i class="fa-solid fa-circle-check"></i> Status: Verified & Enrolled</p>
                         </div>
 
+                        <!-- Persistent Action Buttons Before Rules -->
+                        <div data-html2canvas-ignore="true" class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                            <button type="button" onclick="downloadReceipt()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-2.5 px-3 rounded-xl text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-download"></i> Download Acknowledgement Receipt
+                            </button>
+                            <a href="https://chat.whatsapp.com/YOUR_GROUP_INVITE_LINK" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-2.5 px-3 rounded-xl text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fa-brands fa-whatsapp text-sm"></i> Join WhatsApp Group
+                            </a>
+                        </div>
+
                         <!-- Important Internship Rules & Guidelines on Receipt -->
                         <div class="bg-amber-50 border border-amber-200 p-2.5 rounded-xl space-y-1 text-[9px] text-amber-900">
                             <p class="font-black uppercase">Mandatory Rules & Guidelines (2027):</p>
@@ -534,17 +730,8 @@
                             <p>• <strong>Property & Conduct:</strong> Any damage to institution furniture will require full payment by the responsible intern. Zero tolerance for disrespect/arguing with faculty (certificate will be held).</p>
                             <p>• <strong>Strict Violations:</strong> Any violation by male or female interns will result in internship certificates being withheld. Fighting between interns will result in the institute directly handing over individuals to the police station.</p>
                             <p>• <strong>Prohibitions:</strong> Drinking, smoking, and gutkha/tobacco consumption are strictly prohibited.</p>
-                            <p>• <strong>Devices & Telegram:</strong> Bringing your own laptop or tablet is strongly recommended for better experience (smartphone is acceptable if unavailable). Morning batch interns must install Telegram.</p>
+                            <p>• <strong>Devices:</strong> Bringing your own laptop or tablet is strongly recommended for better experience (smartphone is acceptable if unavailable).</p>
                         </div>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <button type="button" onclick="downloadReceipt()" class="flex-grow bg-slate-900 hover:bg-black text-white font-black py-3 rounded-xl text-[10px] uppercase tracking-wider">
-                            <i class="fa-solid fa-download"></i> Download Receipt Image
-                        </button>
-                        <a href="https://chat.whatsapp.com/YOUR_GROUP_INVITE_LINK" target="_blank" class="flex-grow bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl text-[10px] uppercase tracking-wider text-center flex items-center justify-center gap-1.5">
-                            <i class="fa-brands fa-whatsapp text-sm"></i> Join WhatsApp Group
-                        </a>
                     </div>
                 </div>
 
@@ -556,6 +743,97 @@
             Made by Darpan Sukla
         </footer>
 
+    </div>
+
+    <!-- POST-SUBMISSION POPUP: DOWNLOAD RECEIPT & JOIN WHATSAPP GROUP -->
+    <div id="postSubmitModal" class="hidden fixed inset-0 bg-slate-900/75 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 max-w-xs w-full text-center space-y-4 shadow-2xl border border-slate-100 animate-fade-in">
+            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto text-xl shadow-sm">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="space-y-1">
+                <h3 class="text-xs font-black uppercase text-slate-900 tracking-wide">Application Submitted!</h3>
+                <p class="text-[10px] text-slate-500">Download your acknowledgement receipt and join the official WhatsApp group now.</p>
+            </div>
+            <div class="space-y-2.5 pt-1">
+                <button type="button" onclick="downloadReceipt()" class="w-full bg-slate-900 hover:bg-black text-white font-black py-3 rounded-xl text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md">
+                    <i class="fa-solid fa-download"></i> Download Acknowledgement Receipt
+                </button>
+                <a href="https://chat.whatsapp.com/YOUR_GROUP_INVITE_LINK" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> Join WhatsApp Group
+                </a>
+                <button type="button" onclick="closePostSubmitModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-[10px] uppercase">
+                    Close Window
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODERN NAME & FATHER'S NAME SPELLING VERIFICATION MODAL -->
+    <div id="spellingVerifyModal" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-5 max-w-sm w-full space-y-4 shadow-2xl border border-slate-100 animate-fade-in">
+            <div class="text-center space-y-1 border-b border-slate-100 pb-3">
+                <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto text-base mb-1">
+                    <i class="fa-solid fa-spell-check"></i>
+                </div>
+                <h3 class="text-xs font-black uppercase text-slate-900 tracking-wide">Certificate Spelling Verification</h3>
+                <p class="text-[10px] text-slate-500">Re-type both names below without looking to confirm zero spelling mistakes on your certificate.</p>
+            </div>
+
+            <!-- Blind Verification Mode -->
+            <div id="blindVerifyFields" class="space-y-3 text-[10px]">
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                    <label class="block font-bold text-slate-600 uppercase text-[9px]">Re-type Intern Full Name *</label>
+                    <div class="relative">
+                        <input type="text" id="confirmInternNameInput" placeholder="TYPE INTERN FULL NAME" oninput="checkLiveSpellingMatch()" class="w-full px-3 py-2.5 pr-8 bg-white border border-slate-300 rounded-xl font-bold uppercase-input text-slate-800 focus:outline-none focus:border-indigo-500 transition-colors">
+                        <i id="internMatchIcon" class="fa-solid fa-circle-check text-slate-300 absolute right-3 top-1/2 -translate-y-1/2 text-xs transition-colors"></i>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                    <label class="block font-bold text-slate-600 uppercase text-[9px]">Re-type Father's Name *</label>
+                    <div class="relative">
+                        <input type="text" id="confirmFathersNameInput" placeholder="TYPE FATHER'S NAME" oninput="checkLiveSpellingMatch()" class="w-full px-3 py-2.5 pr-8 bg-white border border-slate-300 rounded-xl font-bold uppercase-input text-slate-800 focus:outline-none focus:border-indigo-500 transition-colors">
+                        <i id="fatherMatchIcon" class="fa-solid fa-circle-check text-slate-300 absolute right-3 top-1/2 -translate-y-1/2 text-xs transition-colors"></i>
+                    </div>
+                </div>
+
+                <div class="flex gap-2 pt-1">
+                    <button type="button" onclick="enableDirectNameEdit()" class="w-1/3 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-bold py-2.5 rounded-xl text-[10px] uppercase">
+                        <i class="fa-solid fa-pen"></i> Edit Names
+                    </button>
+                    <button type="button" id="confirmSpellingBtn" onclick="confirmSpellingVerification()" disabled class="w-2/3 bg-slate-200 text-slate-400 font-black py-2.5 rounded-xl text-[10px] uppercase tracking-wider transition-all cursor-not-allowed">
+                        Confirm & Continue <i class="fa-solid fa-check"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Direct Edit Mode (Only Intern Name & Father's Name) -->
+            <div id="directEditNamesFields" class="hidden space-y-3 text-[10px]">
+                <div class="p-3 bg-amber-50/60 border border-amber-200 rounded-xl space-y-2">
+                    <label class="block font-bold text-slate-700 uppercase text-[9px]">Edit Intern Name (First / Middle / Last) *</label>
+                    <div class="grid grid-cols-3 gap-1.5">
+                        <input type="text" id="modalEditFirstName" placeholder="FIRST" oninput="convertToUpperCase(this)" class="w-full px-2 py-2 bg-white border border-slate-300 rounded-lg font-bold uppercase-input text-slate-800">
+                        <input type="text" id="modalEditMiddleName" placeholder="MIDDLE" oninput="convertToUpperCase(this)" class="w-full px-2 py-2 bg-white border border-slate-300 rounded-lg font-bold uppercase-input text-slate-800">
+                        <input type="text" id="modalEditLastName" placeholder="LAST" oninput="convertToUpperCase(this)" class="w-full px-2 py-2 bg-white border border-slate-300 rounded-lg font-bold uppercase-input text-slate-800">
+                    </div>
+                </div>
+
+                <div class="p-3 bg-amber-50/60 border border-amber-200 rounded-xl space-y-1.5">
+                    <label class="block font-bold text-slate-700 uppercase text-[9px]">Edit Father's Name *</label>
+                    <input type="text" id="modalEditFathersName" placeholder="ENTER FATHER'S NAME" oninput="convertToUpperCase(this)" class="w-full px-2 py-2 bg-white border border-slate-300 rounded-lg font-bold uppercase-input text-slate-800">
+                </div>
+
+                <div class="flex gap-2 pt-1">
+                    <button type="button" onclick="cancelDirectNameEdit()" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-[10px] uppercase">
+                        Cancel
+                    </button>
+                    <button type="button" onclick="saveDirectNameEdit()" class="w-2/3 bg-indigo-600 hover:bg-indigo-700 text-white font-black py-2.5 rounded-xl text-[10px] uppercase tracking-wider shadow-md">
+                        Save & Re-Verify <i class="fa-solid fa-check"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- MODAL POPUP -->
@@ -577,12 +855,15 @@
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbywGz79XMo2toP3QEEh3nBi2kx5AiUybnjGwyrCNsUoMgYFD_gNKlvQscDmbZgfoRbSYQ/exec";
 
-        let verifiedFirstName = "";
         let verifiedEmail = "";
+        let isFinalEmailVerified = false;
+        let emailWarningShown = false;
         let paymentProofBase64 = "";
         let passportPhotoBase64 = "";
         let generatedRegNo = "";
+        let isFilteredMissingMode = false;
         let ytPlayer;
+        let activeSelfieStream = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             let daySelect = document.getElementById('dobDay');
@@ -620,6 +901,10 @@
             if (typeof YT !== 'undefined' && YT.Player) {
                 initYouTubePlayer();
             }
+        }
+
+        function closeFirstPopupAndStart() {
+            document.getElementById('firstScreenPopup').classList.add('hidden');
         }
 
         function onYouTubeIframeAPIReady() {
@@ -671,6 +956,31 @@
             input.value = input.value.toUpperCase();
         }
 
+        /* ================= STRICT NUMERIC INPUT HANDLERS ================= */
+        function handlePinInput(input) {
+            input.value = input.value.replace(/[^0-9]/g, '').slice(0, 6);
+            let warn = document.getElementById('pinLiveWarning');
+            if (input.value.length > 0 && input.value.length < 6) {
+                warn.classList.remove('hidden');
+            } else {
+                warn.classList.add('hidden');
+            }
+        }
+
+        function handleMobileSelfInput(input) {
+            input.value = input.value.replace(/[^0-9]/g, '').slice(0, 10);
+            let warn = document.getElementById('mobileSelfLiveWarning');
+            if (input.value.length > 0 && input.value.length < 10) {
+                warn.classList.remove('hidden');
+            } else {
+                warn.classList.add('hidden');
+            }
+        }
+
+        function clearFieldHighlight(el) {
+            el.classList.remove('field-error-highlight');
+        }
+
         function copyTextDirect(elementId, labelName) {
             let textElement = document.getElementById(elementId);
             let textToCopy = textElement.innerText;
@@ -705,95 +1015,66 @@
         }
 
         function goToScreen(screenNum) {
-            for(let i=1; i<=5; i++) {
+            if (screenNum !== 4) {
+                stopSelfieCamera();
+            }
+            for(let i=1; i<=4; i++) {
                 document.getElementById('screen' + i).classList.add('hidden');
             }
             document.getElementById('screen' + screenNum).classList.remove('hidden');
-            document.getElementById('progressIndicator').innerText = "Screen " + screenNum + " of 5: " + getScreenTitle(screenNum);
+            document.getElementById('progressIndicator').innerText = "Screen " + screenNum + " of 4: " + getScreenTitle(screenNum);
 
-            if(screenNum === 4) {
+            if(screenNum === 2) {
+                resetFormFieldVisibility();
+            }
+            if(screenNum === 3) {
                 populateReviewScreen();
+            }
+            if(screenNum === 4) {
+                prepareScreen4SelfieAndEmail();
             }
         }
 
         function getScreenTitle(num) {
-            if(num === 1) return "Email Verification";
-            if(num === 2) return "Payment Details";
-            if(num === 3) return "Registration Form";
-            if(num === 4) return "Data Review";
-            if(num === 5) return "Passport Photo";
+            if(num === 1) return "Payment Details";
+            if(num === 2) return "Registration Form";
+            if(num === 3) return "Data Review";
+            if(num === 4) return "Selfie Verification & Final Email OTP";
         }
 
-        async function requestOTP() {
-            let name = document.getElementById('regFirstName').value.trim();
-            let email = document.getElementById('regEmail').value.trim();
-
-            if(!name || !email) {
-                showError("Please enter your First Name and Email ID.");
-                return;
-            }
-
-            let btn = document.getElementById('sendOtpBtn');
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sending...`;
-
-            try {
-                let res = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: "send_otp", name: name, email: email })
-                });
-                let result = await res.json();
-
-                if(result.status === "success") {
-                    verifiedFirstName = name;
-                    verifiedEmail = email;
-                    document.getElementById('displayEmail').innerText = email;
-                    document.getElementById('emailStep1').classList.add('hidden');
-                    document.getElementById('emailStep2').classList.remove('hidden');
-                } else {
-                    showError("Failed to send OTP.");
-                }
-            } catch(e) {
-                showError("Network error.");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Send Verification Code`;
+        /* ================= EMAIL WARNING POP-UP & AUTO-DOMAIN ================= */
+        function triggerEmailWarningPopup() {
+            if (!emailWarningShown) {
+                emailWarningShown = true;
+                showModal(
+                    "Active Email Warning",
+                    "Please enter a valid, active email address that you can access right now. You will receive a 6-digit OTP on this email to complete your final application submission."
+                );
             }
         }
 
-        async function verifyOTP() {
-            let otp = document.getElementById('otpInput').value.trim();
-            if(!otp || otp.length < 6) {
-                showError("Please enter the 6-digit OTP code.");
-                return;
-            }
-
-            let btn = document.getElementById('verifyOtpBtn');
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying...`;
-
-            try {
-                let res = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: "verify_otp", email: verifiedEmail, otp: otp })
-                });
-                let result = await res.json();
-
-                if(result.status === "success") {
-                    document.getElementById('formDisplayEmail').value = verifiedEmail;
-                    goToScreen(2);
-                } else {
-                    showError("Invalid or expired OTP.");
-                }
-            } catch(e) {
-                showError("Verification failed.");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `Verify Email & Proceed to Payment`;
+        function handleEmailInput(input) {
+            let val = input.value;
+            let atIndex = val.indexOf('@');
+            let suffixEl = document.getElementById('emailDomainSuffix');
+            if (atIndex !== -1) {
+                suffixEl.style.display = 'none';
+            } else {
+                suffixEl.style.display = 'block';
             }
         }
 
-        async function validateScreen2() {
+        function getFullEmailValue() {
+            let raw = document.getElementById('formEmail').value.trim();
+            if (!raw) return "";
+            if (raw.includes('@')) {
+                return raw;
+            }
+            return raw + "@gmail.com";
+        }
+
+        /* ================= SCREEN 1: PAYMENT VALIDATION ================= */
+        function validateScreen1() {
             let rrn = document.getElementById('upiRrnInput').value.trim();
             let fileInput = document.getElementById('paymentProofInput');
 
@@ -810,7 +1091,7 @@
             let reader = new FileReader();
             reader.onload = function(e) {
                 paymentProofBase64 = e.target.result;
-                goToScreen(3);
+                goToScreen(2);
             };
             reader.readAsDataURL(file);
         }
@@ -829,6 +1110,10 @@
 
         function closeModal() {
             document.getElementById('customModal').classList.add('hidden');
+        }
+
+        function closePostSubmitModal() {
+            document.getElementById('postSubmitModal').classList.add('hidden');
         }
 
         function updateFullNameDisplay() {
@@ -874,53 +1159,361 @@
             document.getElementById('displayAge').innerText = age + " Years";
         }
 
-        function validateScreen3() {
-            let shift = document.getElementById('shiftTimingSelect').value;
-            let firstName = document.getElementById('formFirstName').value;
-            let lastName = document.getElementById('formLastName').value;
-            let fathersName = document.getElementById('formFathersName').value.trim();
-            let college = document.getElementById('formCollege').value === "Other" ? document.getElementById('formCollegeOther').value : document.getElementById('formCollege').value;
-            let stream = document.getElementById('formStream').value === "Other" ? document.getElementById('formStreamOther').value : document.getElementById('formStream').value;
-            let major = document.getElementById('formMajor').value === "Other" ? document.getElementById('formMajorOther').value : document.getElementById('formMajor').value;
-            let pin = document.getElementById('formPin').value;
-            let mobile = document.getElementById('formMobileSelf').value;
+        /* ================= FILTER TO SHOW ONLY MISSING / INVALID MANDATORY FIELDS ================= */
+        function resetFormFieldVisibility() {
+            isFilteredMissingMode = false;
+            document.getElementById('missingFieldsActionBar').classList.add('hidden');
+            document.querySelectorAll('#screen2 [data-field-group]').forEach(el => {
+                el.classList.remove('hidden');
+            });
+            document.querySelectorAll('#screen2 .grid.grid-cols-2').forEach(grid => {
+                grid.classList.remove('hidden');
+            });
+            let sameAddrRow = document.getElementById('sameAddressCheck').parentElement;
+            if (sameAddrRow) sameAddrRow.classList.remove('hidden');
+            if (document.getElementById('sameAddressCheck').checked) {
+                document.getElementById('permAddressContainer').classList.add('hidden');
+            }
+            let natContainer = document.getElementById('formNationality').parentElement;
+            if (natContainer) natContainer.classList.remove('hidden');
+            let guardContainer = document.getElementById('formMobileGuardian').parentElement;
+            if (guardContainer) guardContainer.classList.remove('hidden');
+        }
 
-            if(!shift || !firstName || !lastName || !fathersName || !college || !stream || !major || pin.length !== 6 || mobile.length !== 10) {
+        function toggleShowAllFormFields() {
+            if (isFilteredMissingMode) {
+                resetFormFieldVisibility();
+            }
+        }
+
+        function filterOnlyMissingFields(invalidGroups) {
+            isFilteredMissingMode = true;
+            document.querySelectorAll('#screen2 [data-field-group]').forEach(el => {
+                let groupName = el.getAttribute('data-field-group');
+                if (invalidGroups.includes(groupName)) {
+                    el.classList.remove('hidden');
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
+
+            // Hide non-mandatory sibling boxes inside 2-column grids when filtering
+            let natContainer = document.getElementById('formNationality').parentElement;
+            if (natContainer) natContainer.classList.add('hidden');
+            let guardContainer = document.getElementById('formMobileGuardian').parentElement;
+            if (guardContainer) guardContainer.classList.add('hidden');
+            let sameAddrRow = document.getElementById('sameAddressCheck').parentElement;
+            if (sameAddrRow) sameAddrRow.classList.add('hidden');
+
+            // Hide any 2-column grid wrapper if all its children are hidden
+            document.querySelectorAll('#screen2 .grid.grid-cols-2').forEach(grid => {
+                let visibleChild = Array.from(grid.children).some(ch => !ch.classList.contains('hidden'));
+                if (!visibleChild) {
+                    grid.classList.add('hidden');
+                } else {
+                    grid.classList.remove('hidden');
+                }
+            });
+
+            document.getElementById('missingFieldsActionBar').classList.remove('hidden');
+            document.getElementById('screen2').scrollTop = 0;
+        }
+
+        /* ================= SCREEN 2: FORM VALIDATION & MODERN BLIND SPELLING VERIFICATION ================= */
+        function validateScreen2() {
+            let invalidGroups = [];
+
+            let shiftEl = document.getElementById('shiftTimingSelect');
+            if (!shiftEl.value) {
+                invalidGroups.push('shift');
+                shiftEl.classList.add('field-error-highlight');
+            }
+
+            let firstEl = document.getElementById('formFirstName');
+            let lastEl = document.getElementById('formLastName');
+            if (!firstEl.value.trim() || !lastEl.value.trim()) {
+                invalidGroups.push('internName');
+                if (!firstEl.value.trim()) firstEl.classList.add('field-error-highlight');
+                if (!lastEl.value.trim()) lastEl.classList.add('field-error-highlight');
+            }
+
+            let fatherEl = document.getElementById('formFathersName');
+            if (!fatherEl.value.trim()) {
+                invalidGroups.push('fathersName');
+                fatherEl.classList.add('field-error-highlight');
+            }
+
+            let motherEl = document.getElementById('formMothersName');
+            if (!motherEl.value.trim()) {
+                invalidGroups.push('mothersName');
+                motherEl.classList.add('field-error-highlight');
+            }
+
+            let genderEl = document.getElementById('formGender');
+            if (!genderEl.value) {
+                invalidGroups.push('gender');
+                genderEl.classList.add('field-error-highlight');
+            }
+
+            let maritalEl = document.getElementById('formMarital');
+            if (!maritalEl.value) {
+                invalidGroups.push('marital');
+                maritalEl.classList.add('field-error-highlight');
+            }
+
+            let dobDayEl = document.getElementById('dobDay');
+            let dobMonthEl = document.getElementById('dobMonth');
+            let dobYearEl = document.getElementById('dobYear');
+            if (!dobDayEl.value || !dobMonthEl.value || !dobYearEl.value) {
+                invalidGroups.push('dob');
+                if (!dobDayEl.value) dobDayEl.classList.add('field-error-highlight');
+                if (!dobMonthEl.value) dobMonthEl.classList.add('field-error-highlight');
+                if (!dobYearEl.value) dobYearEl.classList.add('field-error-highlight');
+            }
+
+            let categoryEl = document.getElementById('formCategory');
+            if (!categoryEl.value) {
+                invalidGroups.push('category');
+                categoryEl.classList.add('field-error-highlight');
+            }
+
+            let religionEl = document.getElementById('formReligion');
+            if (!religionEl.value) {
+                invalidGroups.push('religion');
+                religionEl.classList.add('field-error-highlight');
+            }
+
+            let collegeSel = document.getElementById('formCollege');
+            let collegeOther = document.getElementById('formCollegeOther');
+            let collegeVal = collegeSel.value === "Other" ? collegeOther.value.trim() : collegeSel.value;
+            if (!collegeVal) {
+                invalidGroups.push('college');
+                if (!collegeSel.value) collegeSel.classList.add('field-error-highlight');
+                else collegeOther.classList.add('field-error-highlight');
+            }
+
+            let streamSel = document.getElementById('formStream');
+            let streamOther = document.getElementById('formStreamOther');
+            let streamVal = streamSel.value === "Other" ? streamOther.value.trim() : streamSel.value;
+            if (!streamVal) {
+                invalidGroups.push('stream');
+                if (!streamSel.value) streamSel.classList.add('field-error-highlight');
+                else streamOther.classList.add('field-error-highlight');
+            }
+
+            let majorSel = document.getElementById('formMajor');
+            let majorOther = document.getElementById('formMajorOther');
+            let majorVal = majorSel.value === "Other" ? majorOther.value.trim() : majorSel.value;
+            if (!majorVal) {
+                invalidGroups.push('major');
+                if (!majorSel.value) majorSel.classList.add('field-error-highlight');
+                else majorOther.classList.add('field-error-highlight');
+            }
+
+            let addressEl = document.getElementById('formAddress');
+            if (!addressEl.value.trim()) {
+                invalidGroups.push('address');
+                addressEl.classList.add('field-error-highlight');
+            }
+
+            let sameChecked = document.getElementById('sameAddressCheck').checked;
+            let permEl = document.getElementById('formPermanentAddress');
+            let permAddress = sameChecked ? addressEl.value.trim() : permEl.value.trim();
+            if (!sameChecked && !permAddress) {
+                invalidGroups.push('permAddress');
+                permEl.classList.add('field-error-highlight');
+            }
+
+            let pinEl = document.getElementById('formPin');
+            let pinVal = pinEl.value.trim();
+            if (!/^[0-9]{6}$/.test(pinVal)) {
+                invalidGroups.push('pin');
+                pinEl.classList.add('field-error-highlight');
+                document.getElementById('pinLiveWarning').classList.remove('hidden');
+            }
+
+            let mobileEl = document.getElementById('formMobileSelf');
+            let mobileVal = mobileEl.value.trim();
+            if (!/^[0-9]{10}$/.test(mobileVal)) {
+                invalidGroups.push('mobileSelf');
+                mobileEl.classList.add('field-error-highlight');
+                document.getElementById('mobileSelfLiveWarning').classList.remove('hidden');
+            }
+
+            let emailEl = document.getElementById('formEmail');
+            let email = getFullEmailValue();
+            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                invalidGroups.push('email');
+                emailEl.classList.add('field-error-highlight');
+            }
+
+            let eduEl = document.getElementById('formEducation');
+            if (!eduEl.value) {
+                invalidGroups.push('education');
+                eduEl.classList.add('field-error-highlight');
+            }
+
+            let deviceEl = document.getElementById('formDevice');
+            if (!deviceEl.value) {
+                invalidGroups.push('device');
+                deviceEl.classList.add('field-error-highlight');
+            }
+
+            let compEl = document.getElementById('formComputerSkills');
+            if (!compEl.value) {
+                invalidGroups.push('computerSkills');
+                compEl.classList.add('field-error-highlight');
+            }
+
+            let typingEl = document.getElementById('formTypingSkills');
+            if (!typingEl.value) {
+                invalidGroups.push('typingSkills');
+                typingEl.classList.add('field-error-highlight');
+            }
+
+            if (invalidGroups.length > 0) {
+                filterOnlyMissingFields(invalidGroups);
                 showError("Please fill in all mandatory fields correctly.");
                 return;
             }
 
-            let combinedFullName = document.getElementById('displayCombinedFullName').innerText;
-            
-            let verifyFullNamePrompt = prompt("SPELLING VERIFICATION: Please re-type your Intern Full Name (small or capital letters accepted):");
-            if(!verifyFullNamePrompt || verifyFullNamePrompt.toUpperCase() !== combinedFullName) {
-                alert("Intern Full Name spelling did not match. Please check and try again.");
-                return;
+            resetFormFieldVisibility();
+
+            if(verifiedEmail !== email) {
+                verifiedEmail = email;
+                isFinalEmailVerified = false;
             }
 
-            let verifyFatherPrompt = prompt("SPELLING VERIFICATION: Please re-type Father's Name (small or capital letters accepted):");
-            if(!verifyFatherPrompt || verifyFatherPrompt.toUpperCase() !== fathersName) {
-                alert("Father's Name spelling did not match. Please check and try again.");
-                return;
-            }
-
-            goToScreen(4);
+            openSpellingModal();
         }
 
+        function openSpellingModal() {
+            document.getElementById('blindVerifyFields').classList.remove('hidden');
+            document.getElementById('directEditNamesFields').classList.add('hidden');
+
+            let internInput = document.getElementById('confirmInternNameInput');
+            let fatherInput = document.getElementById('confirmFathersNameInput');
+            internInput.value = "";
+            fatherInput.value = "";
+
+            checkLiveSpellingMatch();
+            document.getElementById('spellingVerifyModal').classList.remove('hidden');
+            setTimeout(() => internInput.focus(), 100);
+        }
+
+        function closeSpellingModal() {
+            document.getElementById('spellingVerifyModal').classList.add('hidden');
+        }
+
+        function enableDirectNameEdit() {
+            document.getElementById('modalEditFirstName').value = document.getElementById('formFirstName').value.trim();
+            document.getElementById('modalEditMiddleName').value = document.getElementById('formMiddleName').value.trim();
+            document.getElementById('modalEditLastName').value = document.getElementById('formLastName').value.trim();
+            document.getElementById('modalEditFathersName').value = document.getElementById('formFathersName').value.trim();
+
+            document.getElementById('blindVerifyFields').classList.add('hidden');
+            document.getElementById('directEditNamesFields').classList.remove('hidden');
+        }
+
+        function cancelDirectNameEdit() {
+            document.getElementById('directEditNamesFields').classList.add('hidden');
+            document.getElementById('blindVerifyFields').classList.remove('hidden');
+        }
+
+        function saveDirectNameEdit() {
+            let newFirst = document.getElementById('modalEditFirstName').value.trim().toUpperCase();
+            let newMiddle = document.getElementById('modalEditMiddleName').value.trim().toUpperCase();
+            let newLast = document.getElementById('modalEditLastName').value.trim().toUpperCase();
+            let newFather = document.getElementById('modalEditFathersName').value.trim().toUpperCase();
+
+            if (!newFirst || !newLast || !newFather) {
+                showError("First Name, Last Name, and Father's Name cannot be empty.");
+                return;
+            }
+
+            document.getElementById('formFirstName').value = newFirst;
+            document.getElementById('formMiddleName').value = newMiddle;
+            document.getElementById('formLastName').value = newLast;
+            document.getElementById('formFathersName').value = newFather;
+            updateFullNameDisplay();
+
+            document.getElementById('confirmInternNameInput').value = "";
+            document.getElementById('confirmFathersNameInput').value = "";
+            checkLiveSpellingMatch();
+
+            document.getElementById('directEditNamesFields').classList.add('hidden');
+            document.getElementById('blindVerifyFields').classList.remove('hidden');
+            setTimeout(() => document.getElementById('confirmInternNameInput').focus(), 100);
+        }
+
+        function checkLiveSpellingMatch() {
+            let targetIntern = document.getElementById('displayCombinedFullName').innerText.trim().toUpperCase();
+            let targetFather = document.getElementById('formFathersName').value.trim().toUpperCase();
+
+            let internInput = document.getElementById('confirmInternNameInput');
+            let fatherInput = document.getElementById('confirmFathersNameInput');
+            
+            internInput.value = internInput.value.toUpperCase();
+            fatherInput.value = fatherInput.value.toUpperCase();
+
+            let typedIntern = internInput.value.trim();
+            let typedFather = fatherInput.value.trim();
+
+            let internMatch = typedIntern === targetIntern && targetIntern.length > 0;
+            let fatherMatch = typedFather === targetFather && targetFather.length > 0;
+
+            let internIcon = document.getElementById('internMatchIcon');
+            let fatherIcon = document.getElementById('fatherMatchIcon');
+
+            if (internMatch) {
+                internInput.className = "w-full px-3 py-2.5 pr-8 bg-emerald-50/40 border border-emerald-500 rounded-xl font-bold uppercase-input text-slate-800 focus:outline-none transition-colors";
+                internIcon.className = "fa-solid fa-circle-check text-emerald-600 absolute right-3 top-1/2 -translate-y-1/2 text-xs transition-colors";
+            } else {
+                internInput.className = "w-full px-3 py-2.5 pr-8 bg-white border border-slate-300 rounded-xl font-bold uppercase-input text-slate-800 focus:outline-none focus:border-indigo-500 transition-colors";
+                internIcon.className = "fa-solid fa-circle-check text-slate-300 absolute right-3 top-1/2 -translate-y-1/2 text-xs transition-colors";
+            }
+
+            if (fatherMatch) {
+                fatherInput.className = "w-full px-3 py-2.5 pr-8 bg-emerald-50/40 border border-emerald-500 rounded-xl font-bold uppercase-input text-slate-800 focus:outline-none transition-colors";
+                fatherIcon.className = "fa-solid fa-circle-check text-emerald-600 absolute right-3 top-1/2 -translate-y-1/2 text-xs transition-colors";
+            } else {
+                fatherInput.className = "w-full px-3 py-2.5 pr-8 bg-white border border-slate-300 rounded-xl font-bold uppercase-input text-slate-800 focus:outline-none focus:border-indigo-500 transition-colors";
+                fatherIcon.className = "fa-solid fa-circle-check text-slate-300 absolute right-3 top-1/2 -translate-y-1/2 text-xs transition-colors";
+            }
+
+            let confirmBtn = document.getElementById('confirmSpellingBtn');
+            if (internMatch && fatherMatch) {
+                confirmBtn.disabled = false;
+                confirmBtn.className = "w-2/3 bg-indigo-600 hover:bg-indigo-700 text-white font-black py-2.5 rounded-xl text-[10px] uppercase tracking-wider shadow-md transition-all cursor-pointer";
+            } else {
+                confirmBtn.disabled = true;
+                confirmBtn.className = "w-2/3 bg-slate-200 text-slate-400 font-black py-2.5 rounded-xl text-[10px] uppercase tracking-wider transition-all cursor-not-allowed";
+            }
+        }
+
+        function confirmSpellingVerification() {
+            closeSpellingModal();
+            goToScreen(3);
+        }
+
+        /* ================= SCREEN 3: REVIEW SCREEN ================= */
         function populateReviewScreen() {
-            let f = document.getElementById('formFirstName').value;
-            let m = document.getElementById('formMiddleName').value;
-            let l = document.getElementById('formLastName').value;
+            let f = document.getElementById('formFirstName').value.trim();
+            let m = document.getElementById('formMiddleName').value.trim();
+            let l = document.getElementById('formLastName').value.trim();
             let fullName = (f + " " + (m ? m + " " : "") + l).trim();
             let college = document.getElementById('formCollege').value === "Other" ? document.getElementById('formCollegeOther').value : document.getElementById('formCollege').value;
             let stream = document.getElementById('formStream').value === "Other" ? document.getElementById('formStreamOther').value : document.getElementById('formStream').value;
             let major = document.getElementById('formMajor').value === "Other" ? document.getElementById('formMajorOther').value : document.getElementById('formMajor').value;
 
+            let maskedEmail = maskEmailString(verifiedEmail);
+
             let html = `
                 <p><strong>Full Name:</strong> ${fullName}</p>
                 <p><strong>Father's Name:</strong> ${document.getElementById('formFathersName').value}</p>
                 <p><strong>Mother's Name:</strong> ${document.getElementById('formMothersName').value}</p>
-                <p><strong>Email:</strong> ${verifiedEmail}</p>
+                <p><strong>Email:</strong> ${maskedEmail}</p>
                 <p><strong>Mobile (Self):</strong> ${document.getElementById('formMobileSelf').value}</p>
                 <p><strong>Shift:</strong> ${document.getElementById('shiftTimingSelect').value}</p>
                 <p><strong>College:</strong> ${college}</p>
@@ -930,8 +1523,129 @@
             document.getElementById('reviewContentBox').innerHTML = html;
         }
 
-        function triggerPhotoCapture() {
-            document.getElementById('passportPhotoInput').click();
+        function maskEmailString(email) {
+            if (!email || !email.includes('@')) return "xxxx@gmail.com";
+            let parts = email.split('@');
+            let namePart = parts[0];
+            let domainPart = parts[1];
+            if (namePart.length <= 2) {
+                return "xx@" + domainPart;
+            }
+            let maskedName = namePart.substring(0, 2) + "xxxx" + namePart.substring(namePart.length - 1);
+            return maskedName + "@" + domainPart;
+        }
+
+        /* ================= SCREEN 4: SELFIE VERIFICATION & FINAL EMAIL OTP ================= */
+        function prepareScreen4SelfieAndEmail() {
+            if (passportPhotoBase64) {
+                document.getElementById('selfieGuideView').classList.add('hidden');
+                document.getElementById('selfieCameraView').classList.add('hidden');
+                document.getElementById('selfiePreviewView').classList.remove('hidden');
+                document.getElementById('finalEmailOtpBox').classList.remove('hidden');
+            } else {
+                document.getElementById('selfieGuideView').classList.remove('hidden');
+                document.getElementById('selfieCameraView').classList.add('hidden');
+                document.getElementById('selfiePreviewView').classList.add('hidden');
+                document.getElementById('finalEmailOtpBox').classList.add('hidden');
+            }
+
+            document.getElementById('finalVerifyEmailText').innerText = verifiedEmail;
+            document.getElementById('editFinalEmailContainer').classList.add('hidden');
+            document.getElementById('finalVerifyEmailText').classList.remove('hidden');
+            document.getElementById('editFinalEmailBtn').classList.remove('hidden');
+
+            if (isFinalEmailVerified) {
+                document.getElementById('finalEmailVerifiedBadge').classList.remove('hidden');
+                document.getElementById('finalSendOtpStep').classList.add('hidden');
+                document.getElementById('finalEnterOtpStep').classList.add('hidden');
+            } else {
+                document.getElementById('finalEmailVerifiedBadge').classList.add('hidden');
+                document.getElementById('finalSendOtpStep').classList.remove('hidden');
+                document.getElementById('finalEnterOtpStep').classList.add('hidden');
+            }
+            updateFinalSubmitButtonState();
+        }
+
+        async function openSelfieCamera() {
+            document.getElementById('selfieGuideView').classList.add('hidden');
+            document.getElementById('selfiePreviewView').classList.add('hidden');
+            document.getElementById('selfieCameraView').classList.remove('hidden');
+
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                try {
+                    stopSelfieCamera();
+                    activeSelfieStream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: 'user', width: { ideal: 720 }, height: { ideal: 720 } },
+                        audio: false
+                    });
+                    let videoEl = document.getElementById('selfieVideoStream');
+                    videoEl.srcObject = activeSelfieStream;
+                    await videoEl.play();
+                } catch (err) {
+                    // Fallback to native front camera file picker if live stream is blocked
+                    document.getElementById('selfieCameraView').classList.add('hidden');
+                    document.getElementById('selfieGuideView').classList.remove('hidden');
+                    document.getElementById('passportPhotoInput').click();
+                }
+            } else {
+                document.getElementById('selfieCameraView').classList.add('hidden');
+                document.getElementById('selfieGuideView').classList.remove('hidden');
+                document.getElementById('passportPhotoInput').click();
+            }
+        }
+
+        function stopSelfieCamera() {
+            if (activeSelfieStream) {
+                activeSelfieStream.getTracks().forEach(track => track.stop());
+                activeSelfieStream = null;
+            }
+            let videoEl = document.getElementById('selfieVideoStream');
+            if (videoEl) {
+                videoEl.srcObject = null;
+            }
+        }
+
+        function backToSelfieGuide() {
+            stopSelfieCamera();
+            document.getElementById('selfieCameraView').classList.add('hidden');
+            document.getElementById('selfieGuideView').classList.remove('hidden');
+        }
+
+        function captureSelfieFromStream() {
+            let videoEl = document.getElementById('selfieVideoStream');
+            if (!videoEl || !videoEl.videoWidth) {
+                document.getElementById('passportPhotoInput').click();
+                return;
+            }
+
+            let canvas = document.getElementById('selfieCanvas');
+            let size = Math.min(videoEl.videoWidth, videoEl.videoHeight);
+            canvas.width = size;
+            canvas.height = size;
+            let ctx = canvas.getContext('2d');
+
+            // Center-crop square and un-mirror so text/face orientation is natural
+            let sx = (videoEl.videoWidth - size) / 2;
+            let sy = (videoEl.videoHeight - size) / 2;
+            ctx.translate(size, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(videoEl, sx, sy, size, size, 0, 0, size, size);
+
+            passportPhotoBase64 = canvas.toDataURL('image/jpeg', 0.9);
+            stopSelfieCamera();
+
+            document.getElementById('passportPhotoPreview').src = passportPhotoBase64;
+            document.getElementById('selfieCameraView').classList.add('hidden');
+            document.getElementById('selfiePreviewView').classList.remove('hidden');
+            document.getElementById('finalEmailOtpBox').classList.remove('hidden');
+            updateFinalSubmitButtonState();
+        }
+
+        function retakeSelfie() {
+            passportPhotoBase64 = "";
+            updateFinalSubmitButtonState();
+            document.getElementById('finalEmailOtpBox').classList.add('hidden');
+            openSelfieCamera();
         }
 
         function previewPassportPhoto(event) {
@@ -942,22 +1656,148 @@
                     passportPhotoBase64 = e.target.result;
                     let preview = document.getElementById('passportPhotoPreview');
                     preview.src = passportPhotoBase64;
-                    preview.classList.remove('hidden');
-                    document.getElementById('photoPlaceholder').classList.add('hidden');
-                    document.getElementById('retakePhotoBtn').classList.remove('hidden');
+                    document.getElementById('selfieGuideView').classList.add('hidden');
+                    document.getElementById('selfieCameraView').classList.add('hidden');
+                    document.getElementById('selfiePreviewView').classList.remove('hidden');
+                    document.getElementById('finalEmailOtpBox').classList.remove('hidden');
                     
-                    let finalBtn = document.getElementById('finalSubmitBtn');
-                    finalBtn.disabled = false;
-                    finalBtn.className = "w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md";
+                    updateFinalSubmitButtonState();
                 };
                 reader.readAsDataURL(file);
             }
         }
 
+        function toggleEditFinalEmail() {
+            document.getElementById('editFinalEmailInput').value = verifiedEmail;
+            document.getElementById('finalVerifyEmailText').classList.add('hidden');
+            document.getElementById('editFinalEmailBtn').classList.add('hidden');
+            document.getElementById('editFinalEmailContainer').classList.remove('hidden');
+            document.getElementById('editFinalEmailInput').focus();
+        }
+
+        function cancelEditFinalEmail() {
+            document.getElementById('editFinalEmailContainer').classList.add('hidden');
+            document.getElementById('finalVerifyEmailText').classList.remove('hidden');
+            document.getElementById('editFinalEmailBtn').classList.remove('hidden');
+        }
+
+        function saveEditedFinalEmail() {
+            let newEmail = document.getElementById('editFinalEmailInput').value.trim();
+            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!newEmail || !emailRegex.test(newEmail)) {
+                showError("Please enter a valid active email address.");
+                return;
+            }
+
+            verifiedEmail = newEmail;
+            document.getElementById('formEmail').value = newEmail;
+            handleEmailInput(document.getElementById('formEmail'));
+            isFinalEmailVerified = false;
+
+            document.getElementById('finalVerifyEmailText').innerText = verifiedEmail;
+            document.getElementById('editFinalEmailContainer').classList.add('hidden');
+            document.getElementById('finalVerifyEmailText').classList.remove('hidden');
+            document.getElementById('editFinalEmailBtn').classList.remove('hidden');
+
+            document.getElementById('finalEmailVerifiedBadge').classList.add('hidden');
+            document.getElementById('finalEnterOtpStep').classList.add('hidden');
+            document.getElementById('finalSendOtpStep').classList.remove('hidden');
+            document.getElementById('finalOtpInput').value = "";
+            updateFinalSubmitButtonState();
+        }
+
+        async function requestFinalOTP() {
+            let firstName = document.getElementById('formFirstName').value.trim();
+            let middleName = document.getElementById('formMiddleName').value.trim();
+            let lastName = document.getElementById('formLastName').value.trim();
+            let fullName = (firstName + " " + (middleName ? middleName + " " : "") + lastName).trim();
+
+            if(!fullName || !verifiedEmail) {
+                showError("Missing name or email address.");
+                return;
+            }
+
+            let btn = document.getElementById('sendFinalOtpBtn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sending OTP...`;
+
+            try {
+                let res = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "send_otp", name: fullName, email: verifiedEmail })
+                });
+                let result = await res.json();
+
+                if(result.status === "success") {
+                    document.getElementById('finalSendOtpStep').classList.add('hidden');
+                    document.getElementById('finalEnterOtpStep').classList.remove('hidden');
+                    document.getElementById('finalOtpInput').value = "";
+                    document.getElementById('finalOtpInput').focus();
+                } else {
+                    showError("Failed to send OTP. Please check your email ID.");
+                }
+            } catch(e) {
+                showError("Network error while sending OTP.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Send Final Submission OTP`;
+            }
+        }
+
+        async function verifyFinalOTP() {
+            let otp = document.getElementById('finalOtpInput').value.trim();
+            if(!otp || otp.length < 6) {
+                showError("Please enter the 6-digit OTP sent to your email.");
+                return;
+            }
+
+            let btn = document.getElementById('verifyFinalOtpBtn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying`;
+
+            try {
+                let res = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "verify_otp", email: verifiedEmail, otp: otp })
+                });
+                let result = await res.json();
+
+                if(result.status === "success") {
+                    isFinalEmailVerified = true;
+                    document.getElementById('finalEnterOtpStep').classList.add('hidden');
+                    document.getElementById('finalEmailVerifiedBadge').classList.remove('hidden');
+                    updateFinalSubmitButtonState();
+                } else {
+                    showError("Invalid or expired OTP.");
+                }
+            } catch(e) {
+                showError("OTP verification failed.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `Verify OTP`;
+            }
+        }
+
+        function updateFinalSubmitButtonState() {
+            let finalBtn = document.getElementById('finalSubmitBtn');
+            if (passportPhotoBase64 && isFinalEmailVerified) {
+                finalBtn.disabled = false;
+                finalBtn.className = "w-2/3 bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 rounded-xl text-[11px] uppercase tracking-wider shadow-md transition-all cursor-pointer";
+            } else {
+                finalBtn.disabled = true;
+                finalBtn.className = "w-2/3 bg-slate-200 text-slate-400 font-black py-3 rounded-xl text-[11px] uppercase tracking-wider transition-all cursor-not-allowed";
+            }
+        }
+
         async function submitCompleteRegistration() {
-            let firstName = document.getElementById('formFirstName').value;
-            let middleName = document.getElementById('formMiddleName').value;
-            let lastName = document.getElementById('formLastName').value;
+            if (!passportPhotoBase64 || !isFinalEmailVerified) {
+                showError("Please complete Selfie Verification and verify your email via OTP first.");
+                return;
+            }
+
+            let firstName = document.getElementById('formFirstName').value.trim();
+            let middleName = document.getElementById('formMiddleName').value.trim();
+            let lastName = document.getElementById('formLastName').value.trim();
             let fullCombinedName = (firstName + " " + (middleName ? middleName + " " : "") + lastName).trim();
             let permAddr = document.getElementById('sameAddressCheck').checked ? document.getElementById('formAddress').value : document.getElementById('formPermanentAddress').value;
 
@@ -997,7 +1837,7 @@
 
             let btn = document.getElementById('finalSubmitBtn');
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Submitting All Data & Passport Photo...`;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Submitting...`;
 
             try {
                 let res = await fetch(APPS_SCRIPT_URL, {
@@ -1009,7 +1849,7 @@
                 if(result.status === "success") {
                     document.getElementById('receiptRefNo').innerText = generatedRegNo;
                     document.getElementById('rcptName').innerText = payload.fullName;
-                    document.getElementById('rcptEmail').innerText = payload.email;
+                    document.getElementById('rcptEmail').innerText = maskEmailString(payload.email);
                     document.getElementById('rcptShift').innerText = payload.shiftTiming;
                     document.getElementById('rcptCollege').innerText = payload.college;
                     document.getElementById('rcptRrn').innerText = payload.paymentUpiRrn;
@@ -1017,13 +1857,20 @@
                     document.getElementById('cameraScanStage').classList.add('hidden');
                     document.getElementById('receiptStage').classList.remove('hidden');
                     document.getElementById('progressIndicator').innerText = "Registration Complete";
+
+                    // Open Post-Submission Popup with Download Receipt & Join WhatsApp Group
+                    setTimeout(() => {
+                        document.getElementById('postSubmitModal').classList.remove('hidden');
+                    }, 400);
                 } else {
                     showError("Server submission error.");
+                    btn.disabled = false;
+                    btn.innerHTML = `Complete Final Submission`;
                 }
             } catch(e) {
                 showError("Failed to save data to Google Sheet.");
-            } finally {
                 btn.disabled = false;
+                btn.innerHTML = `Complete Final Submission`;
             }
         }
 
@@ -1031,7 +1878,7 @@
             let card = document.getElementById('receiptCard');
             html2canvas(card).then(canvas => {
                 let link = document.createElement('a');
-                link.download = generatedRegNo + '_Receipt.png';
+                link.download = generatedRegNo + '_Acknowledgement_Receipt.png';
                 link.href = canvas.toDataURL();
                 link.click();
             });
